@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Transparent Navbar Styling */
+        .bg-light-transparent {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
+            transition: background-color 0.3s ease;
+        }
+
+        .bg-light-transparent:hover {
+            background-color: rgba(255, 255, 255, 0.9); /* Less transparent on hover */
+        }
+
+        /* Navbar brand logo adjustments */
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1); /* Small hover effect on logo */
+        }
+
+        /* Navbar link styling */
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #007bff; /* Changes to the primary blue on hover */
+        }
+
+        .navbar-toggler {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dropdown menu styling */
+        .dropdown-menu {
+            background-color: #f8f9fa;
+            border-radius: 0.25rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Section header style */
+        .section-header {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Full-Screen Carousel Styling */
+        .carousel-item {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Gradient Overlay */
+        .carousel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 11, 88, 0.6) 0%, rgba(0, 49, 97, 0.6) 100%);
+            z-index: 1;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            text-align: center;
+        }
+
+        /* Fade-in Animations */
+        .fade-in-left {
+            animation: fadeInLeft 1.5s ease-out;
+        }
+
+        .fade-in-right {
+            animation: fadeInRight 1.5s ease-out;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 2s ease-out;
+        }
+
+        @keyframes fadeInLeft {
+            0% { opacity: 0; transform: translateX(-30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            0% { opacity: 0; transform: translateX(30px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Background color for content sections */
+        .section-div {
+            padding: 60px 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+        }
+        .card-text {
+            font-size: 1rem;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        /* Ensuring all pricing cards have the same height */
+        .d-flex {
+            display: flex;
+        }
+
+        .flex-fill {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            height: 100%; /
+        }
+
+        .card-body {
+            flex-grow: 1;
+        }
+
+        /* Why Choose Us Section */
+        #why-choose-us {
+            background-color: #f8f9fa;
+        }
+
+        .section-header {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+
+        /* Price cards */
+        .pricing-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #003161;
+            color: white;
+            border-color: #003161;
+        }
+
+        /* General Card Styling */
+        .team-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-top-wrapper {
+            padding: 0;
+            text-align: center;
+        }
+
+        .team-img {
+            width: 60%;
+            height: auto;
+            object-fit: cover;
+            border: 5px solid #f8f9fa;
+        }
+
+        .card-body {
+            padding-top: 1.25rem;
+        }
+
+        /* Social Icons */
+        .social-icons a {
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #007bff;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+
+        /* Contact Form Styling */
+        .form-floating label {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        button[type="submit"] {
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Contact Information Styling */
+        ul.list-unstyled li {
+            font-size: 1.1rem;
+        }
+
+        ul.list-unstyled li i {
+            font-size: 1.2rem;
+        }
+
+        /* Map Styling */
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .map-container iframe {
+            border: none;
+        }
+
+        /* Section Header */
+        .section-header {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+
+        /* Footer styles */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .footer a {
+            color: #ffffff;
+            margin-left: 20px;
+        }
+
+        .footer a:hover {
+            color: #ffc107;
+        }
+
+    </style>
+    <title>Waba Yangu</title>
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+    <link rel="icon" href="{% static 'assets/images/waba-yangu-logo.png' %}">
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+       <!-- ============================================================== -->
+        <!-- Transparent Navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-header">
+            <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light-transparent">
+                <a class="navbar-brand" href="#home">
+                    <img src="{% static 'assets/images/waba-yangu-logo.png' %}" alt="Waba Yangu Logo" width="40">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#home"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#products"><i class="fas fa-box"></i> Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about-us"><i class="fas fa-info-circle"></i> About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#team"><i class="fas fa-users"></i> Meet the Team</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact-us"><i class="fas fa-phone-alt"></i> Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#register"><i class="fas fa-user-plus"></i> Register</a>
+                        </li>
+                        <!-- Dropdown for Login -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#login"><i class="fas fa-user"></i> Login as Customer</a>
+                                <a class="dropdown-item" href="#admin-login"><i class="fas fa-user-shield"></i> Login as Admin</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Transparent Navbar -->
+        <!-- ============================================================== -->
+
+
+        <div class="">
+            <div class="container-fluid">
+               <!-- ============================================================== -->
+                <!-- Full-Screen Carousel with Modern Design -->
+                <!-- ============================================================== -->
+                <section id="home" class="carousel slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <!-- Slide 1 -->
+                        <div class="carousel-item active">
+                            <img src="{% static 'assets/images/black-person-innovation.jpg' %}" class="d-block w-100" alt="Slide 1">
+                            <div class="carousel-overlay"></div>
+                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                                <h3 class="display-3 text-light fade-in-left">Welcome to Waba Yangu</h3>
+                                <p class="lead text-light fade-in-right">Your one-stop solution for digital water metering and prepaid water systems.</p>
+                                <a href="#products" class="btn btn-primary btn-lg mt-4 fade-in-up">Explore Our Products</a>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="carousel-item">
+                            <img src="{% static 'assets/images/innovation.jpg' %}" class="d-block w-100" alt="Slide 2">
+                            <div class="carousel-overlay"></div>
+                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                                <h3 class="display-3 text-light fade-in-left">Innovative Products</h3>
+                                <p class="lead text-light fade-in-right">Efficient and smart solutions for all your water metering needs.</p>
+                                <a href="#services" class="btn btn-primary btn-lg mt-4 fade-in-up">Learn More</a>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="carousel-item">
+                            <img src="{% static 'assets/images/connectivity.jpg' %}" class="d-block w-100" alt="Slide 3">
+                            <div class="carousel-overlay"></div>
+                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
+                                <h3 class="display-3 text-light fade-in-left">Stay Connected</h3>
+                                <p class="lead text-light fade-in-right">Manage your water usage and payments with ease and convenience.</p>
+                                <a href="#contact" class="btn btn-primary btn-lg mt-4 fade-in-up">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carousel Controls -->
+                    <a class="carousel-control-prev" href="#home" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#home" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </section>
+
+                 <!-- ============================================================== -->
+                <!-- About Us Section -->
+                <!-- ============================================================== -->
+               <section id="about-us" class="bg-light py-5">
+                    <div class="container">
+                        <div class="row text-center mb-5">
+                            <div class="col-12">
+                                <h2 class="section-header display-5">About Us</h2>
+                                <p class="lead text-muted">We are dedicated to transforming water management with cutting-edge technology, making it smarter, more efficient, and sustainable for all.</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- About Us Card -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-primary text-white text-center py-4">
+                                        <h4 class="h4">Our Story</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">At Waba Yangu, we're on a mission to bring smart water metering solutions to communities and businesses. Our advanced technologies aim to make water usage more efficient, transparent, and cost-effective for everyone.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Our Mission Card -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-success text-white text-center py-4">
+                                        <h4 class="h4">Our Mission</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">Our mission is to empower communities and businesses with advanced water metering systems that reduce waste, enhance sustainability, and drive cost savings. We integrate technology to help users manage water more effectively.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Our Vision Card -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-info text-white text-center py-4">
+                                        <h4 class="h4">Our Vision</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">We aspire to be leaders in the digital transformation of water management, improving resource conservation and creating value for users. We envision a world where smart water management is the standard for everyone.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Values Section -->
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <h2 class="section-header display-5">Our Core Values</h2>
+                                <p class="lead text-muted mb-5">We operate with integrity, innovation, and sustainability at the heart of everything we do.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-warning text-white text-center py-4">
+                                        <i class="fas fa-handshake fa-3x mb-3"></i>
+                                        <h4 class="h4">Integrity</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">We prioritize honesty, transparency, and trust in all our interactions with customers, partners, and communities.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-warning text-white text-center py-4">
+                                        <i class="fas fa-cogs fa-3x mb-3"></i>
+                                        <h4 class="h4">Innovation</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">We embrace cutting-edge technology and continuously seek innovative solutions to enhance water management practices.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg overflow-hidden h-100">
+                                    <div class="card-header bg-warning text-white text-center py-4">
+                                        <i class="fas fa-leaf fa-3x mb-3"></i>
+                                        <h4 class="h4">Sustainability</h4>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <p class="card-text">We are committed to promoting sustainable water usage practices and contributing to environmental conservation for future generations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- ============================================================== -->
+                <!-- Why Choose Us Section (Staggered Layout) -->
+                <!-- ============================================================== -->
+               <section id="why-choose-us" class="py-5 bg-light section-div">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="section-header display-5">Why Choose Us?</h2>
+                            <p class="lead text-muted">Discover why Waba Yangu is the trusted partner for innovative and reliable water metering solutions. We offer unmatched quality and security with each product.</p>
+                        </div>
+                        <div class="row align-items-center">
+                            <!-- Reason 1 (Left-aligned) -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg transition-all bg-primary text-white">
+                                    <div class="card-body text-left p-5">
+                                        <i class="fas fa-cogs fa-4x mb-3"></i>
+                                        <h4 class="font-weight-bold">Innovative Technology</h4>
+                                        <p class="card-text">We incorporate cutting-edge technology into every water meter, ensuring high efficiency and precision for users and suppliers alike.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Reason 2 (Right-aligned) -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg transition-all bg-light">
+                                    <div class="card-body text-left p-5">
+                                        <i class="fas fa-shield-alt fa-4x text-primary mb-3"></i>
+                                        <h4 class="font-weight-bold text-dark">Secure & Reliable</h4>
+                                        <p class="card-text text-muted">Our solutions are built with the highest standards of security to protect your data and ensure reliable, real-time water usage tracking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Reason 3 (Full-width) -->
+                            <div class="col-12 mt-5">
+                                <div class="card shadow-lg border-0 rounded-lg transition-all bg-info text-white">
+                                    <div class="card-body text-center p-5">
+                                        <i class="fas fa-hand-holding-heart fa-4x mb-3"></i>
+                                        <h4 class="font-weight-bold">Customer-Centered</h4>
+                                        <p class="card-text">We prioritize personalized customer support, delivering solutions tailored to your unique needs and ensuring exceptional service at all times.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </section>
+
+
+                <!-- ============================================================== -->
+                <!-- Products Section (Masonry Layout with 5 Products) -->
+                <!-- ============================================================== -->
+                <section id="products" class="py-5 bg-light section-div">
+                    <div class="container">
+                        <div class="text-center mb-5">
+                            <h2 class="section-header display-5">Our Products</h2>
+                            <p class="lead text-muted">Explore our range of innovative digital water meters and solutions designed to meet your needs and exceed your expectations.</p>
+                        </div>
+                        <div class="row">
+                            <!-- Product 1 (Large card) -->
+                            <div class="col-lg-6 col-md-12 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/prepaid.jpeg' %}" class="card-img-top rounded-top" alt="Digital Water Meter">
+                                    <div class="card-body p-5">
+                                        <h5 class="card-title">Digital Water Meter</h5>
+                                        <p class="card-text">Reliable, accurate, and efficient, our digital water meters are perfect for residential and commercial usage.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product 2 (Small card) -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/water meter.jpeg' %}" class="card-img-top rounded-top" alt="Prepaid Water System">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title">Prepaid Water System</h5>
+                                        <p class="card-text">Manage water consumption with ease using our prepaid water metering system, ideal for both users and utilities.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product 3 (Small card) -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/water-management.jpg' %}" class="card-img-top rounded-top" alt="Water Usage Management">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title">Water Usage Management</h5>
+                                        <p class="card-text">Smart solutions for water utility companies to streamline operations, manage distribution, and track usage efficiently.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product 4 (Medium card) -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/leakage-detection.jpg' %}" class="card-img-top rounded-top" alt="Smart Leakage Detection">
+                                    <div class="card-body p-5">
+                                        <h5 class="card-title">Smart Leakage Detection</h5>
+                                        <p class="card-text">Our water meters come equipped with smart leakage detection systems to prevent water wastage and save costs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product 5 (Medium card) -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/automated billing.jpg' %}" class="card-img-top rounded-top" alt="Automated Billing">
+                                    <div class="card-body p-5">
+                                        <h5 class="card-title">Automated Billing System</h5>
+                                        <p class="card-text">Our water meters seamlessly integrate with billing systems to provide accurate, real-time billing for water usage.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product 6 (Medium card) -->
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card shadow-lg border-0 rounded-lg h-100 transition-all">
+                                    <img src="{% static 'assets/images/remote monitoring.jpg' %}" class="card-img-top rounded-top" alt="Automated Billing">
+                                    <div class="card-body p-5">
+                                        <h5 class="card-title">Remote Monitoring</h5>
+                                        <p class="card-text">Monitor and manage water consumption remotely with our advanced metering solutions, ideal for large-scale users and utilities.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+               <!-- ============================================================== -->
+                <!-- Pricing Section with Icons and Hover Effects -->
+                <!-- ============================================================== -->
+                <section id="pricing" class="py-5 bg-light section-div">
+                    <div class="container">
+                        <div class="row d-flex align-items-stretch">
+                            <!-- Section Title -->
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-5">
+                                <h3 class="section-header display-5">Choose Your Plan</h3>
+                                <p class="lead text-muted">Affordable pricing based on your needs. Get started with our digital water meters for your business or home today!</p>
+                            </div>
+
+                            <!-- Plan 1: Basic Plan for Individuals -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 d-flex">
+                                <div class="card pricing-card text-center flex-fill">
+                                    <div class="card-header bg-white p-4">
+                                        <h3 class="mb-1">Individual</h3>
+                                        <span class="mb-2 d-block">Best for individual users or small households</span>
+                                        <h1 class="mb-1"><span class="font-24">$</span><sub class="display-4">10</sub></h1>
+                                        <p>a month per user</p>
+                                        <a href="#" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
+                                        <p>Month-to-month subscription</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled bullet-check font-14 mb-0">
+                                            <li><i class="fas fa-tachometer-alt"></i> 1 Digital Water Meter</li>
+                                            <li><i class="fas fa-chart-line"></i> Real-Time Usage Monitoring</li>
+                                            <li><i class="fas fa-mobile-alt"></i> Access to Mobile App</li>
+                                            <li><i class="fas fa-headset"></i> Basic Customer Support</li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body border-top">
+                                        <ul class="list-unstyled font-14">
+                                            <li>Get detailed usage reports</li>
+                                            <li>Pay as you use system</li>
+                                            <li>Affordable for personal use</li>
+                                        </ul>
+                                        <a href="#" class="btn btn-outline-primary btn-block btn-lg">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Plan 2: Business Plan for Small & Medium Businesses -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 d-flex">
+                                <div class="card pricing-card text-center flex-fill">
+                                    <div class="card-header bg-white p-4">
+                                        <h3 class="mb-1">Business</h3>
+                                        <span class="mb-2 d-block">Best for small & medium businesses</span>
+                                        <h1 class="mb-1"><span class="font-24">$</span><sub class="display-4">35</sub></h1>
+                                        <p>a month per user</p>
+                                        <a href="#" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
+                                        <p>Month-to-month subscription</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled bullet-check font-14 mb-0">
+                                            <li><i class="fas fa-tachometer-alt"></i> Up to 10 Digital Water Meters</li>
+                                            <li><i class="fas fa-chart-bar"></i> Real-Time Monitoring & Analytics</li>
+                                            <li><i class="fas fa-plug"></i> API Integrations</li>
+                                            <li><i class="fas fa-headset"></i> Priority Customer Support</li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body border-top">
+                                        <ul class="list-unstyled">
+                                            <li>Automated billing and invoicing</li>
+                                            <li>Multi-location monitoring</li>
+                                            <li>Discounts for bulk purchases</li>
+                                        </ul>
+                                        <a href="#" class="btn btn-outline-primary btn-block btn-lg">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Plan 3: Enterprise Plan for Large Enterprises or Partnerships -->
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 d-flex">
+                                <div class="card pricing-card text-center flex-fill">
+                                    <div class="card-header bg-white p-4">
+                                        <h3 class="mb-1">Enterprise</h3>
+                                        <span class="mb-2 d-block">Best for large enterprises & partnerships</span>
+                                        <h1 class="mb-1"><sub class="display-4">Let's Talk</sub></h1>
+                                        <p>Contact us for customized pricing</p>
+                                        <a href="#contact-us" class="btn btn-primary mb-2">Contact Us Now</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-unstyled bullet-check font-14 mb-0">
+                                            <li><i class="fas fa-tachometer-alt"></i> Customizable Digital Water Meters</li>
+                                            <li><i class="fas fa-chart-pie"></i> Advanced Analytics & Reporting</li>
+                                            <li><i class="fas fa-cogs"></i> Custom Integrations</li>
+                                            <li><i class="fas fa-user-shield"></i> Dedicated Support</li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body border-top">
+                                        <ul class="list-unstyled">
+                                            <li>Bulk orders and enterprise solutions</li>
+                                            <li>On-site installation and training</li>
+                                            <li>24/7 customer support</li>
+                                        </ul>
+                                        <a href="#contact-us" class="btn btn-outline-primary btn-block btn-lg">Request a Quote</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+              <!-- ============================================================== -->
+            <!-- About the Team Section -->
+            <!-- ============================================================== -->
+
+            <section id="team" class="py-5 section-div m-5">
+                <div class="text-center mb-4">
+                    <h2 class="section-header display-5">Meet Our Team</h2>
+                    <p class="lead text-muted">Our executive team is dedicated to providing the best water metering solutions. Get to know the experts behind Waba Yangu.</p>
+                </div>
+                <div class="row text-center">
+                    <!-- Team Member 1 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg border-0 team-card h-100">
+                            <div class="card-img-top-wrapper">
+                                <img src="{% static 'assets/images/samuel mwangi.jpg' %}" class="card-img-top rounded-circle team-img" alt="Samuel Saitoti">
+                            </div>
+                            <div class="card-body pt-4"> <!-- Adjusted padding-top -->
+                                <h5 class="card-title">Samuel Saitoti</h5>
+                                <p class="card-text text-muted">CEO & Founder</p>
+                                <p class="card-text">Samuel leads the vision and strategy for Waba Yangu. He has over 10 years of experience in the tech industry and a passion for innovation in water management.</p>
+                                <div class="social-icons">
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg border-0 team-card h-100">
+                            <div class="card-img-top-wrapper">
+                                <img src="{% static 'assets/images/jane-njeri.jpg' %}" class="card-img-top rounded-circle team-img" alt="Jane Njeri">
+                            </div>
+                            <div class="card-body pt-4"> <!-- Adjusted padding-top -->
+                                <h5 class="card-title">Jane Njeri</h5>
+                                <p class="card-text text-muted">COO</p>
+                                <p class="card-text">Jane is the operational backbone of the company, ensuring smooth processes and efficient project execution. With a background in logistics, she ensures we meet our goals.</p>
+                                <div class="social-icons">
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg border-0 team-card h-100">
+                            <div class="card-img-top-wrapper">
+                                <img src="{% static 'assets/images/Yasmin Zawadi.jpg' %}" class="card-img-top rounded-circle team-img" alt="Yasmin Zawadi">
+                            </div>
+                            <div class="card-body pt-4"> <!-- Adjusted padding-top -->
+                                <h5 class="card-title">Yasmin</h5>
+                                <p class="card-text text-muted">CTO</p>
+                                <p class="card-text">Yasmin leads our technical team with her deep expertise in software development and IoT solutions. She's passionate about utilizing technology for sustainable water use.</p>
+                                <div class="social-icons">
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                                    <a href="#" class="text-dark mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                <!-- ============================================================== -->
+                <!-- Contact Us Section -->
+                <!-- ============================================================== -->
+
+                <section id="contact-us" class="py-5 section-div bg-light">
+                    <div class="container">
+                        <div class="row mb-5">
+                            <!-- Contact Form -->
+                            <div class="col-md-6">
+                                <h3 class="section-header mb-4">Get In Touch</h3>
+                                <form id="contactForm">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                                        <label for="name">Full Name</label>
+                                        <div class="invalid-feedback">Please enter your name.</div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                        <label for="email">Email Address</label>
+                                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                                    </div>
+                                    <div class="form-floating mb-4">
+                                        <textarea class="form-control" id="message" placeholder="Your message" rows="4" style="height: 150px;" required></textarea>
+                                        <label for="message">Message</label>
+                                        <div class="invalid-feedback">Please enter your message.</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 py-2">Send Message</button>
+                                </form>
+                            </div>
+
+                            <!-- Contact Details -->
+                            <div class="col-md-6">
+                                <h3 class="section-header mb-4">Contact Information</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3"><i class="fas fa-phone text-primary me-2"></i><strong> Phone:</strong> +254 721 212 024</li>
+                                    <li class="mb-3"><i class="fas fa-envelope text-primary me-2"></i><strong> Email:</strong> info@wabayangu.com</li>
+                                    <li class="mb-3"><i class="fas fa-map-marker-alt text-primary me-2"></i><strong> Address:</strong> Kipro Centre, Westlands, Nairobi, Kenya</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Google Map -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="section-header mb-4 text-center">Our Location</h3>
+                                <div class="map-container shadow-lg">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.846304521725!2d36.79814067577996!3d-1.2647554356046302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1791a3266197%3A0x1b878049a1937f81!2sKipro%20Center%20Dental%20Clinic!5e0!3m2!1sen!2ske!4v1732196627667!5m2!1sen!2ske" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                 <!-- ============================================================== -->
+                <!-- footer -->
+                <!-- ============================================================== -->
+                <footer class="footer">
+                    <div class="container text-center">
+                        <p>&copy; 2024 Waba Yangu. All Rights Reserved.</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- ============================================================== -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'assets/libs/js/main-js.js' %}"></script>
+</body>
+
+</html>
