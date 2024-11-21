@@ -13,13 +13,13 @@
 
         /* Transparent Navbar Styling */
         .bg-light-transparent {
-            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
         }
 
         .bg-light-transparent:hover {
-            background-color: rgba(255, 255, 255, 0.9); /* Less transparent on hover */
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         /* Navbar brand logo adjustments */
@@ -28,18 +28,18 @@
         }
 
         .navbar-brand img:hover {
-            transform: scale(1.1); /* Small hover effect on logo */
+            transform: scale(1.1);
         }
 
         /* Navbar link styling */
         .nav-link {
             color: #333;
-            font-weight: 500;
+            font-weight: 800;
             transition: color 0.3s ease;
         }
 
         .nav-link:hover {
-            color: #007bff; /* Changes to the primary blue on hover */
+            color: #007bff;
         }
 
         .navbar-toggler {
@@ -340,10 +340,10 @@
                             <a class="nav-link" href="#team"><i class="fas fa-users"></i> Meet the Team</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact-us"><i class="fas fa-phone-alt"></i> Contact Us</a>
+                            <a class="nav-link" href="#contact-us"><i class="fas fa-phone-volume"></i>Contact Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#register"><i class="fas fa-user-plus"></i> Register</a>
+                            <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Register</a>
                         </li>
                         <!-- Dropdown for Login -->
                         <li class="nav-item dropdown">
@@ -352,8 +352,8 @@
                                 <i class="fas fa-sign-in-alt"></i> Login
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#login"><i class="fas fa-user"></i> Login as Customer</a>
-                                <a class="dropdown-item" href="#admin-login"><i class="fas fa-user-shield"></i> Login as Admin</a>
+                                <a class="dropdown-item" href="{% url 'login' %}"><i class="fas fa-user"></i> Login as Customer</a>
+                                <a class="dropdown-item" href="{% url 'loginadmin' %}"><i class="fas fa-lock"></i> Login as Admin</a>
                             </div>
                         </li>
                     </ul>
@@ -389,7 +389,7 @@
                             <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
                                 <h3 class="display-3 text-light fade-in-left">Innovative Products</h3>
                                 <p class="lead text-light fade-in-right">Efficient and smart solutions for all your water metering needs.</p>
-                                <a href="#services" class="btn btn-primary btn-lg mt-4 fade-in-up">Learn More</a>
+                                <a href="#about-us" class="btn btn-primary btn-lg mt-4 fade-in-up">Learn More</a>
                             </div>
                         </div>
                         <!-- Slide 3 -->
@@ -399,7 +399,7 @@
                             <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
                                 <h3 class="display-3 text-light fade-in-left">Stay Connected</h3>
                                 <p class="lead text-light fade-in-right">Manage your water usage and payments with ease and convenience.</p>
-                                <a href="#contact" class="btn btn-primary btn-lg mt-4 fade-in-up">Contact Us</a>
+                                <a href="#contact-us" class="btn btn-primary btn-lg mt-4 fade-in-up">Contact Us</a>
                             </div>
                         </div>
                     </div>
