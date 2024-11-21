@@ -15,3 +15,6 @@ def login_admin(request):
 
 def register(request):
     return render(request, 'register.html')
+
+def customerdashboard(request):
+    return render(request, 'dashboard-customer.html')
