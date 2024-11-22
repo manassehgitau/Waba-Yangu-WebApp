@@ -21,3 +21,9 @@ def register(request):
 
 def employeedashboard(request):
     return render(request, 'employee-dashboard.html')
+
+def customerdashboard(request):
+    return render(request, 'admin-dashboard.html')
+
+def admindashboard(request):
+    return render(request, 'customer-dashboard.html')
