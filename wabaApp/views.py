@@ -13,8 +13,11 @@ def login(request):
 def login_admin(request):
     return render(request, 'loginadmin.html')
 
+def login_employee(request):
+    return render(request, 'loginemployee.html')
+
 def register(request):
     return render(request, 'register.html')
 
-def customerdashboard(request):
-    return render(request, 'dashboard-customer.html')
+def employeedashboard(request):
+    return render(request, 'employee-dashboard.html')
