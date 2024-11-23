@@ -45,15 +45,16 @@
         <div class="card ">
             <div class="card-header text-center"><a href="{% url 'index' %}"><img class="logo-img" src="{% static 'assets/images/waba-yangu-logo.png' %}" alt="logo"></a><span class="splash-description">Please enter your Employee information.</span></div>
             <div class="card-body">
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+                        <input class="form-control form-control-lg" id="username" type="text" name="username" placeholder="Username" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="employeeid" type="text" placeholder="Employee ID" autocomplete="off">
+                        <input class="form-control form-control-lg" id="employeeid" type="text" name="employee_id" placeholder="Employee ID" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+                        <input class="form-control form-control-lg" id="password" type="password" name="password" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
