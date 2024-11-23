@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from wabaApp.models import ContactMessage, Customer, Admin
+from wabaApp.models import ContactMessage, Customer, Admin, Employee
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from wabaApp.forms import ContactForm
@@ -76,10 +76,13 @@ def login_admin(request):
         try:
             admin = Admin.objects.get(username=username)
 
-            if check_password(password, admin.password):
+            if password == admin.password:
                 # Successfully logged in
-                messages.success(request, 'You are logged in successfully.')
-                return redirect('admindashboard')
+                if  admin_id == admin.admin_id:
+                    messages.success(request, 'You are logged in successfully.')
+                    return redirect('admindashboard')
+                else:
+                    messages.error(request, 'Incorrect admin ID.')
             else:
                 messages.error(request, 'Incorrect password.')
         except Admin.DoesNotExist:
@@ -88,6 +91,24 @@ def login_admin(request):
 
 
 def login_employee(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        employee_id = request.POST['employee_id']
+        try:
+            employee = Employee.objects.get(username=username)
+
+            if password == employee.password:
+                # Successfully logged in
+                if employee_id == employee.employee_id:
+                    messages.success(request, 'You are logged in successfully.')
+                    return redirect('employeedashboard')
+                else:
+                    messages.error(request, 'Incorrect employee ID.')
+            else:
+                messages.error(request, 'Incorrect password.')
+        except Employee.DoesNotExist:
+            messages.error(request, 'User does not exist.')
     return render(request, 'loginemployee.html')
 
 def forgotpassword(request):
