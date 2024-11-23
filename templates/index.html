@@ -757,7 +757,7 @@
                                         <span class="mb-2 d-block">Best for individual users or small households</span>
                                         <h1 class="mb-1"><span class="font-24">Kshs. </span><sub class="display-4">10,000</sub></h1>
                                         <p>a month per user</p>
-                                        <a href="#" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
+                                        <a href="{% url 'login' %}" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
                                         <p>Month-to-month subscription</p>
                                     </div>
                                     <div class="card-body">
@@ -787,7 +787,7 @@
                                         <span class="mb-2 d-block">Best for small & medium businesses</span>
                                         <h1 class="mb-1"><span class="font-24">Kshs. </span><sub class="display-4">35,000</sub></h1>
                                         <p>a month per user</p>
-                                        <a href="#" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
+                                        <a href="{% url 'login' %}" class="btn btn-primary mb-2">Start 14 Day Free Trial</a>
                                         <p>Month-to-month subscription</p>
                                     </div>
                                     <div class="card-body">
@@ -1025,19 +1025,27 @@
                             <!-- Contact Form -->
                             <div class="col-md-6">
                                 <h3 class="section-header mb-4">Get In Touch</h3>
-                                <form id="contactForm">
+                                {% if messages %}
+                                  <div class="container mt-3">
+                                    {% for message in messages %}
+                                      <div class="alert alert-success">{{ message }}</div>
+                                    {% endfor %}
+                                  </div>
+                                {% endif %}
+                                <form method="POST">
+                                    {% csrf_token %}
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required>
                                         <label for="name">Full Name</label>
                                         <div class="invalid-feedback">Please enter your name.</div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email" required>
                                         <label for="email">Email Address</label>
                                         <div class="invalid-feedback">Please enter a valid email address.</div>
                                     </div>
                                     <div class="form-floating mb-4">
-                                        <textarea class="form-control" id="message" placeholder="Your message" rows="4" style="height: 150px;" required></textarea>
+                                        <textarea class="form-control" id="message" placeholder="Your message" rows="4" style="height: 150px;" name="message" required></textarea>
                                         <label for="message">Message</label>
                                         <div class="invalid-feedback">Please enter your message.</div>
                                     </div>
@@ -1049,9 +1057,9 @@
                             <div class="col-md-6">
                                 <h3 class="section-header mb-4">Contact Information</h3>
                                 <ul class="list-unstyled">
-                                    <li class="mb-3"><i class="fas fa-phone text-primary me-2"></i><strong> Phone:</strong> +254 721 212 024</li>
-                                    <li class="mb-3"><i class="fas fa-envelope text-primary me-2"></i><strong> Email:</strong> info@wabayangu.com</li>
-                                    <li class="mb-3"><i class="fas fa-map-marker-alt text-primary me-2"></i><strong> Address:</strong> Kipro Centre, Westlands, Nairobi, Kenya</li>
+                                    <li class="mb-3"><i class="fas fa-phone text-primary me-2"></i><strong>  Phone:</strong> +254 721 212 024</li>
+                                    <li class="mb-3"><i class="fas fa-envelope text-primary me-2"></i><strong>  Email:</strong> info@wabayangu.com</li>
+                                    <li class="mb-3"><i class="fas fa-map-marker-alt text-primary me-2"></i><strong>  Address:</strong> Kipro Centre, Westlands, Nairobi, Kenya</li>
                                 </ul>
                             </div>
                         </div>

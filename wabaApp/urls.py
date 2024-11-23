@@ -13,4 +13,9 @@ urlpatterns = [
     path('employeedashboard/', views.employeedashboard, name='employeedashboard'),
     path('customerdashboard/', views.customerdashboard, name='customerdashboard'),
     path('admindashboard/', views.admindashboard, name='admindashboard'),
+    path('productscheckout/', views.productscheckout, name='productscheckout'),
+    path('productslist/', views.productslist, name='productslist'),
+    path('productsinglelist/', views.productsinglelist, name='productsinglelist'),
+    path('customerinvoice/', views.customerinvoice, name='customerinvoice'),
+    path('forgotpassword/', views.forgotpassword, name='forgotpassword'),
 ]

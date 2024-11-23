@@ -5,8 +5,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login</title>
     {% load static %}
+
+    <title>Login</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
     <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
@@ -44,12 +45,21 @@
         <div class="card ">
             <div class="card-header text-center"><a href="{% url 'index' %}"><img class="logo-img" src="{% static '/assets/images/waba-yangu-logo.png' %} " alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
+                {% if messages %}
+                  <div class="alert-container">
+                    {% for message in messages %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
                 <form>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+                        <input class="form-control form-control-lg" name="username" id="username" type="text" placeholder="Username" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+                        <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
@@ -61,9 +71,9 @@
             </div>
             <div class="card-footer bg-white p-0  ">
                 <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Create An Account</a></div>
+                    <a href="{% url 'register' %}" class="footer-link">Create An Account</a></div>
                 <div class="card-footer-item card-footer-item-bordered">
-                    <a href="#" class="footer-link">Forgot Password</a>
+                    <a href="{% url 'forgotpassword' %}" class="footer-link">Forgot Password</a>
                 </div>
             </div>
         </div>

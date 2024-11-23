@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -70,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wabaYangu.wsgi.application'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
