@@ -46,20 +46,21 @@
             <div class="card-header text-center"><a href="{% url 'index' %}"><img class="logo-img" src="{% static '/assets/images/waba-yangu-logo.png' %} " alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
             <div class="card-body">
                 {% if messages %}
-                  <div class="alert-container">
-                    {% for message in messages %}
-                      <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                      </div>
-                    {% endfor %}
-                  </div>
+                    <div class="alert-container">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-                <form>
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control form-control-lg" name="username" id="username" type="text" placeholder="Username" autocomplete="off">
+                        <input class="form-control form-control-lg" name="username" id="username" type="text" placeholder="Username" autocomplete="off" required>
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Password">
+                        <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Password" required>
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">

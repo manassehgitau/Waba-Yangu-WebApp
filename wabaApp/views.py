@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from wabaApp.models import ContactMessage, Customer
+from wabaApp.models import ContactMessage, Customer, Admin
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
 from wabaApp.forms import ContactForm
 
 # Create your views here.
@@ -26,21 +27,16 @@ def login(request):
         password = request.POST['password']
         try:
             customer = Customer.objects.get(username=username)
-            if customer.password == password:
+
+            if check_password(password, customer.password):
                 # Successfully logged in
                 messages.success(request, 'You are logged in successfully.')
-                return redirect('home')  # Replace 'home' with your desired page
+                return redirect('customerdashboard')
             else:
                 messages.error(request, 'Incorrect password.')
         except Customer.DoesNotExist:
             messages.error(request, 'User does not exist.')
     return render(request, 'login.html')
-
-def login_admin(request):
-    return render(request, 'loginadmin.html')
-
-def login_employee(request):
-    return render(request, 'loginemployee.html')
 
 
 def register(request):
@@ -49,19 +45,50 @@ def register(request):
         email = request.POST['email']
         phone = request.POST['phone']
         password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
 
-        # Check if the user already exists
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return redirect('register')
+
+            # Check if the user already exists
         if Customer.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken.')
             return redirect('register')
 
+        # Hash the password before saving it to the database
+        hashed_password = make_password(password)
+
         # Create a new customer
-        new_customer = Customer(username=username, email=email, phone=phone, password=password)
+        new_customer = Customer(username=username, email=email, phone=phone, password=hashed_password)
         new_customer.save()
         messages.success(request, 'You have been registered successfully.')
-        return redirect('login')  # Redirect to login page after successful registration
+        return redirect('login')
 
     return render(request, 'register.html')
+
+def login_admin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        admin_id = request.POST['admin_id']
+
+        try:
+            admin = Admin.objects.get(username=username)
+
+            if check_password(password, admin.password):
+                # Successfully logged in
+                messages.success(request, 'You are logged in successfully.')
+                return redirect('admindashboard')
+            else:
+                messages.error(request, 'Incorrect password.')
+        except Admin.DoesNotExist:
+            messages.error(request, 'User does not exist.')
+    return render(request, 'loginadmin.html')
+
+
+def login_employee(request):
+    return render(request, 'loginemployee.html')
 
 def forgotpassword(request):
     return render(request, 'customer-forgot-password.html')

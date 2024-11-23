@@ -31,8 +31,8 @@
     }
 
     .logo-img{
-        width: 100px;
-        height: 100px;
+        width: 200px;
+        height: 200px;
     }
     </style>
 </head>
@@ -46,15 +46,25 @@
             <div class="card-header text-center"><a href="{% url 'index' %}"><img src="{% static 'assets/images/waba-yangu-logo.png' %}" alt="Waba Yangu Logo" width="40">
 </a><span class="splash-description">Please enter your Admin information.</span></div>
             <div class="card-body">
-                <form>
+                {% if messages %}
+                    <div class="alert-container">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="username" type="text" placeholder="Username" autocomplete="off">
+                        <input class="form-control form-control-lg" id="username" type="text" name="username" placeholder="Username" autocomplete="off" required>
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="adminid" type="text" placeholder="Admin ID" autocomplete="off">
+                        <input class="form-control form-control-lg" id="admin_id" type="text" name="admin_id" placeholder="Admin ID" autocomplete="off" required>
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" id="password" type="password" placeholder="Password">
+                        <input class="form-control form-control-lg" id="password" type="password" name="password" placeholder="Password" required>
                     </div>
                     <div class="form-group">
                         <label class="custom-control custom-checkbox">
