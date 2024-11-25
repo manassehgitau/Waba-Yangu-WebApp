@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{% static 'assets/vendor/charts/chartist-bundle/chartist.css' %}">
     <!-- Morris Bundle CSS -->
     <link rel="stylesheet" href="{% static 'assets/vendor/charts/morris-bundle/morris.css' %}">
+    <!-- Morris.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <!-- Material Design Icons -->
     <link rel="stylesheet" href="{% static 'assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css' %}">
     <!-- C3 Charts CSS -->
@@ -57,82 +59,33 @@
 	                            <input class="form-control" type="text" placeholder="Search..">
 	                        </div>
 	                    </li>
-	                    <li class="nav-item dropdown notification">
-	                        <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
-	                        <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
-	                            <li>
-	                                <div class="notification-title"> Notification</div>
-	                                <div class="notification-list">
-	                                    <div class="list-group">
-	                                        <a href="#" class="list-group-item list-group-item-action active">
-	                                            <div class="notification-info">
-	                                                <div class="notification-list-user-img"><img src="{% static 'assets/images/avatar-2.jpg' %}" alt="" class="user-avatar-md rounded-circle"></div>
-	                                                <div class="notification-list-user-block"><span class="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
-	                                                    <div class="notification-date">2 min ago</div>
-	                                                </div>
-	                                            </div>
-	                                        </a>
-	                                        <a href="#" class="list-group-item list-group-item-action">
-	                                            <div class="notification-info">
-	                                                <div class="notification-list-user-img"><img src="{% static 'assets/images/avatar-3.jpg' %}" alt="" class="user-avatar-md rounded-circle"></div>
-	                                                <div class="notification-list-user-block"><span class="notification-list-user-name">John Abraham </span>is now following you
-	                                                    <div class="notification-date">2 days ago</div>
-	                                                </div>
-	                                            </div>
-	                                        </a>
-	                                        <a href="#" class="list-group-item list-group-item-action">
-	                                            <div class="notification-info">
-	                                                <div class="notification-list-user-img"><img src="{% static 'assets/images/avatar-4.jpg' %}" alt="" class="user-avatar-md rounded-circle"></div>
-	                                                <div class="notification-list-user-block"><span class="notification-list-user-name">Monaan Pechi</span> is watching your main repository
-	                                                    <div class="notification-date">2 min ago</div>
-	                                                </div>
-	                                            </div>
-	                                        </a>
-	                                        <a href="#" class="list-group-item list-group-item-action">
-	                                            <div class="notification-info">
-	                                                <div class="notification-list-user-img"><img src="{% static 'assets/images/avatar-5.jpg' %}" alt="" class="user-avatar-md rounded-circle"></div>
-	                                                <div class="notification-list-user-block"><span class="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
-	                                                    <div class="notification-date">2 min ago</div>
-	                                                </div>
-	                                            </div>
-	                                        </a>
-	                                    </div>
-	                                </div>
-	                            </li>
-	                            <li>
-	                                <div class="list-footer"> <a href="#">View all notifications</a></div>
-	                            </li>
-	                        </ul>
-	                    </li>
+
 	                    <li class="nav-item dropdown connection">
 	                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
 	                        <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
 	                            <li class="connection-list">
 	                                <div class="row">
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/github.png' %}" alt="" > <span>Github</span></a>
+	                                        <a href="{% url 'index' %}" class="connection-item"><img src="{% static 'assets/images/house.png' %}" alt="" > <span>Home</span></a>
 	                                    </div>
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/dribbble.png' %}" alt="" > <span>Dribbble</span></a>
+	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/fraud.png' %}" alt="" > <span>Report</span></a>
 	                                    </div>
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/dropbox.png' %}" alt="" > <span>Dropbox</span></a>
+	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/customer-service.png' %}" alt="" > <span>Support</span></a>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/bitbucket.png' %}" alt=""> <span>Bitbucket</span></a>
+	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/gmail.png' %}" alt=""> <span>Mail</span></a>
 	                                    </div>
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/mail_chimp.png' %}" alt="" ><span>Mail chimp</span></a>
+	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/dashboard.png' %}" alt="" ><span>Dashboard</span></a>
 	                                    </div>
 	                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
-	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/slack.png' %}" alt="" > <span>Slack</span></a>
+	                                        <a href="#" class="connection-item"><img src="{% static 'assets/images/staff.png' %}" alt="" > <span>Employee List</span></a>
 	                                    </div>
 	                                </div>
-	                            </li>
-	                            <li>
-	                                <div class="conntection-footer"><a href="#">More</a></div>
 	                            </li>
 	                        </ul>
 	                    </li>
@@ -140,8 +93,7 @@
 	                        <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static 'assets/images/avatar-1.jpg' %}" alt="" class="user-avatar-md rounded-circle"></a>
 	                        <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
 	                            <div class="nav-user-info">
-	                                <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-	                                <span class="status"></span><span class="ml-2">Available</span>
+	                                <h5 class="mb-0 text-white nav-user-name">Name </h5>
 	                            </div>
 	                            <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
 	                            <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
@@ -224,9 +176,23 @@
     <script src="{% static 'assets/vendor/charts/c3charts/C3chartjs.js' %}"></script>
     <!-- Dashboard E-commerce JS -->
     <script src="{% static 'assets/libs/js/dashboard-ecommerce.js' %}"></script>
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- daterangepicker js -->
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Morris.js and Raphael.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Chart.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
     $(function() {
         $('input[name="daterange"]').daterangepicker({
@@ -234,8 +200,9 @@
         }, function(start, end, label) {
             console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
         });
-    });
+    })
     </script>
+
 </body>
 
 </html>
