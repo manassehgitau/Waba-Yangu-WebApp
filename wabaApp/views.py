@@ -1,6 +1,6 @@
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
-from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Product, CartItem, Sale
+from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponseRedirect
@@ -90,7 +90,7 @@ def login_admin(request):
                 # Successfully logged in
                 if  admin_id == admin.admin_id:
                     messages.success(request, 'You are logged in successfully.')
-                    return redirect('admindashboard')
+                    return  redirect('admindashboard')
                 else:
                     messages.error(request, 'Incorrect admin ID.')
             else:
@@ -123,46 +123,6 @@ def login_employee(request):
 
 def forgotpassword(request):
     return render(request, 'customer-forgot-password.html')
-
-
-'''
-    This is for testing purposes only (it does not go to a database)
-'''
-# @login_required(login_url='login')
-# def customerdashboard(request, customer_id):
-#     try:
-#         # Get customer and data from the database
-#         customer = Customer.objects.get(id=customer_id)
-#
-#         # Simulate data or query real data
-#         data = {
-#             'water_usage_today': 120,  # Today's usage (replace with actual query)
-#             'prepaid_balance': 450,  # Current balance (replace with actual query)
-#             'leak_detection': 'No Leaks',  # Latest leak status (replace with actual query)
-#             'meter_status': 'Operational',  # Meter status (replace with actual query)
-#             'payment_history': [
-#                 {'amount': 500, 'date': '2024-11-21'},
-#                 {'amount': 300, 'date': '2024-11-13'}
-#             ],
-#             'water_usage_week': [100, 150, 120, 200, 170, 220, 180],  # Water usage for the last 7 days
-#             'balance_trend_week': [450, 420, 430, 410, 400, 380, 450],  # Balance for the last 7 days
-#             'notifications': [
-#                 'Low balance! Please top up.',
-#                 'You have reached 80% of your monthly water usage goal.'
-#             ],
-#             'water_savings': 10,  # Example water savings in percentage
-#             'support_contact': 'support@example.com'  # Support contact info
-#         }
-#
-#         # Pass the data to the template
-#         return render(request, 'customer-dashboard.html', {'customer': customer, 'dashboard_data': data})
-#
-#     except Customer.DoesNotExist:
-#         return render(request, '404.html')  # Handle customer not found
-
-'''
-    This is for Product purposes (it must have a database)
-'''
 
 @login_required(login_url='login')
 def customerdashboard(request, customer_id):
@@ -235,42 +195,9 @@ def customerdashboard(request, customer_id):
     except Customer.DoesNotExist:
         return render(request, '404.html')  # Handle customer not found
 
-# Cart View
-@login_required
-def cart_view(request, customer_id):
-    customer = get_object_or_404(Customer, id=customer_id)
-    cart_items = CartItem.objects.filter(customer=customer)  # Assuming user refers to Customer
-    total_price = sum([item.get_total_price() for item in cart_items])  # Fixed typo
-    return render(request, 'add_to_cart.html', {'cart_items': cart_items, 'total_price': total_price})
-
-# Product List View
-def productslist(request, customer_id):
-    customer = get_object_or_404(Customer, id=customer_id)
-    products = Product.objects.all()  # Correct filter method
-    return render(request, 'customer-product-list.html', {'products': products, 'customer': customer})
-
-@login_required
-# Add to Cart View
-def add_to_cart(request, product_id, customer_id):
-    product = get_object_or_404(Product, id=product_id)
-    customer = get_object_or_404(Customer, id=customer_id)
-    cart_item, created = CartItem.objects.get_or_create(customer=customer, product=product)  # Assuming user is linked to Customer
-    cart_item.quantity += 1
-    cart_item.save()
-    return redirect('productslist', customer_id=customer_id)  # Redirect back to the product list with the customer's ID
-
-@login_required
-def process_sale(request, customer_id):
-    customer = get_object_or_404(Customer, id=customer_id)
-    cart_items = CartItem.objects.filter(customer=customer)
-    if cart_items:
-        total_price = sum([item.get_total_price() for item in cart_items])
-        sale = Sale.objects.create(customer=customer, total_price=total_price)
-        cart_items.delete()  # Clear cart after sale
-    return redirect('admindashboard', customer_id=customer_id)
-
-@login_required(login_url='loginadmin')
 def admindashboard(request):
+    return render(request, 'admin-dashboard.html')
+
 
 @login_required(login_url='loginemployee')
 def employeedashboard(request):
