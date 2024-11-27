@@ -1,13 +1,14 @@
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
-from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Refund, Product, CartItem
+from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Refund, Product, CartItem, Invoice
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
-from wabaApp.forms import ContactForm
+from decimal import Decimal
+from wabaApp.forms import ProductForm
 
 # Create your views here.
 def page_not_found(request):
@@ -262,14 +263,6 @@ def admindashboard(request, admin_id):
         return render(request, '404.html')  # Handle customer not found
 
 
-
-@login_required(login_url='loginemployee')
-def employeedashboard(request):
-    return render(request, 'employee-dashboard.html')
-
-def productscheckout(request):
-    return render(request, 'customer-product-checkout.html')
-
 def productslist(request, customer_id):
     customer = Customer.objects.get(id=customer_id)  # Fetch the customer (You can use get_object_or_404 too)
     products = Product.objects.all()  # Fetch all products
@@ -285,8 +278,70 @@ def add_to_cart(request, product_id, customer_id):
     cart_item.save()
     return redirect('productslist', customer_id=customer.id)  # Redirect to the products list page
 
+@login_required(login_url='loginadmin')
+def admin_product_list(request, admin_id):
+    admin = Admin.objects.get(id=admin_id)  # Fetch the customer (You can use get_object_or_404 too)
+    products = Product.objects.all()
+
+    if request.method == 'POST':
+        # Handle add or edit product
+        product_id = request.POST.get('product_id')
+        if product_id:  # Edit existing product
+            product = get_object_or_404(Product, id=product_id)
+            form = ProductForm(request.POST, request.FILES, instance=product)
+        else:  # Add new product
+            form = ProductForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('admin_product_list')
+
+    return render(request, 'admin-product-management.html', {'admin': admin, 'products': products})
+
+@login_required(login_url='loginadmin')
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('admin_product_list')
+    return render(request, 'admin-product-management.html')
+
 def productsinglelist(request):
     return render(request, 'customer-product-single-list.html')
 
-def customerinvoice(request):
-    return render(request, 'invoice.html')
+
+def generate_invoice(request, sale_id):
+    sale = get_object_or_404(Sale, id=sale_id)
+
+    # Convert the float value (e.g., 20%) to Decimal
+    discount_percentage = Decimal('0.2')  # 20% as Decimal
+
+    # Now, perform the calculation with Decimal values
+    discount = sale.total_price * discount_percentage  # This will work without error
+
+    # Calculate the final total amount (assuming it's a discount for this example)
+    total_amount = sale.total_price - discount
+
+    # Create the invoice
+    invoice = Invoice.objects.create(
+        customer=sale.customer,
+        sale=sale,
+        issue_date=timezone.now(),
+        total_amount=total_amount,  # Set the total amount
+    )
+
+    # Render the invoice page, passing the invoice, discount, and total amount
+    return render(request, 'invoice.html', {
+        'invoice': invoice,
+        'discount': discount,
+        'total_amount': total_amount,
+        'sale': sale  # Pass sale info if needed
+    })
+
+
+@login_required(login_url='loginemployee')
+def employeedashboard(request):
+    return render(request, 'employee-dashboard.html')
+
+def productscheckout(request):
+    return render(request, 'customer-product-checkout.html')

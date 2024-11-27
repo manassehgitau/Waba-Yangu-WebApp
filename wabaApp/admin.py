@@ -1,5 +1,5 @@
 from django.contrib import admin
-from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Product, Refund, CartItem
+from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Product, Refund, CartItem, Invoice
 
 # Register your models here.
 admin.site.register(ContactMessage)
@@ -43,3 +43,10 @@ class CartItemAdmin(admin.ModelAdmin):
     list_display = ('customer', 'product', 'quantity', 'get_total_price')  # Display cart item details
     list_filter = ('customer', 'product')  # Filters for customer and product
     search_fields = ('customer__username', 'product__name')  # Allow search by customer or product name
+
+# Register the Invoice model
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'sale', 'issue_date', 'total_amount')  # Show columns in the list view
+    list_filter = ('issue_date', 'customer')  # Filter options
+    # search_fields = ('customer__username', 'sale__id')  # Searchable

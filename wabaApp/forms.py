@@ -1,7 +1,7 @@
 from django import forms
-from wabaApp.models import ContactMessage
+from wabaApp.models import Product
 
-class ContactForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
     class Meta:
-        model = ContactMessage
-        fields = ['name', 'email', 'message']
+        model = Product
+        fields = ['name', 'price', 'description', 'image']

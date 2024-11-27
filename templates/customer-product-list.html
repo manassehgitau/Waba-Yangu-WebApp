@@ -1,6 +1,67 @@
 {% extends 'blank-page.html' %}
 {% load static %}
 {% block body %}
+    <style>
+        .product-img img {
+            width: 100%; /* Make the image take up the full width of the container */
+            height: 250px; /* Fixed height */
+            object-fit: cover; /* Ensures the aspect ratio is maintained, cropping the image if needed */
+            border-radius: 10px; /* Add some rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+        }
+
+        .product-thumbnail {
+            margin-bottom: 30px; /* Adds spacing between products */
+        }
+
+        .product-content {
+            text-align: center; /* Center-align the product details */
+            padding: 10px 0; /* Adds padding around product content */
+        }
+
+        .product-title {
+            font-size: 1.2rem; /* Slightly larger font for product titles */
+            font-weight: bold; /* Bold title */
+            color: #333; /* Darker color for better readability */
+        }
+
+        .product-price {
+            font-size: 1.1rem; /* Moderate font size for price */
+            color: #28a745; /* Green color for price */
+            font-weight: bold;
+            margin: 10px 0; /* Adds margin around the price */
+        }
+
+        .product-btn {
+            display: flex;
+            justify-content: space-around; /* Evenly distribute buttons */
+            margin-top: 15px; /* Adds margin between buttons and product content */
+        }
+
+        .product-btn a {
+            padding: 8px 15px; /* Adds padding to buttons */
+            font-size: 1rem; /* Consistent font size for buttons */
+            border-radius: 5px; /* Rounds the button corners */
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-outline-light {
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        /* Make sure the layout is responsive */
+        @media (max-width: 768px) {
+            .product-img img {
+                height: 200px; /* Reduce height for smaller screens */
+            }
+        }
+    </style>
+
         <!-- ============================================================== -->
         <!-- wrapper  -->
         <!-- ============================================================== -->
@@ -31,28 +92,31 @@
                     <!-- ============================================================== -->
                     <div class="row">
                         {% for product in products %}
-                        <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div class="product-thumbnail">
-                                <div class="product-img-head">
-                                    <div class="product-img">
-                                        <img src="{{ product.image.url }}" alt="" class="img-fluid">
-                                        <div class="ribbons"></div>
-                                        <div class="product-content">
-                                            <div class="product-content-head">
-                                                <h3 class="product-title">{{ product.name }}</h3>
-                                                <p>{{ product.description }}</p>
-                                                <div class="product-price">Kshs{{ product.price }}</div>
-                                            </div>
-                                            <div class="product-btn">
-                                                <a href="#" class="btn btn-primary">Add to Cart</a>
-                                                <a href="#" class="btn btn-outline-light">Details</a>
-                                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div class="product-thumbnail">
+                                    <div class="product-img-head">
+                                        <div class="product-img">
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                                            {% else %}
+                                                <img src="{% static 'assets/images/error-img.jpg' %}" alt="Default Image" class="img-fluid">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="product-content-head">
+                                            <h3 class="product-title">{{ product.name }}</h3>
+                                            <p>{{ product.description }}</p>
+                                            <div class="product-price">Kshs{{ product.price }}</div>
+                                        </div>
+                                        <div class="product-btn">
+                                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                                            <a href="#" class="btn btn-outline-light">Details</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                    {% endfor %}
                     </div>
                 </div>
             </div>
