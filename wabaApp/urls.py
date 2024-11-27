@@ -13,9 +13,10 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('customerdashboard/<int:customer_id>/', views.customerdashboard, name='customerdashboard'),
     path('employeedashboard/', views.employeedashboard, name='employeedashboard'),
-    path('admindashboard/', views.admindashboard, name='admindashboard'),
+    path('admindashboard/<int:admin_id>/', views.admindashboard, name='admindashboard'),
     path('productscheckout/', views.productscheckout, name='productscheckout'),
     path('productsinglelist/', views.productsinglelist, name='productsinglelist'),
+    path('productslist/<int:customer_id>/', views.productslist, name='productslist'),
     path('customerinvoice/', views.customerinvoice, name='customerinvoice'),
     path('forgotpassword/', views.forgotpassword, name='forgotpassword'),
 ]

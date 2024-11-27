@@ -1,13 +1,12 @@
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
-from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification
+from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Refund, Product, CartItem
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils import timezone
-from datetime import timedelta, datetime
+from datetime import timedelta
 from django.contrib.auth.decorators import login_required
-import math
 from wabaApp.forms import ContactForm
 
 # Create your views here.
@@ -90,7 +89,7 @@ def login_admin(request):
                 # Successfully logged in
                 if  admin_id == admin.admin_id:
                     messages.success(request, 'You are logged in successfully.')
-                    return  redirect('admindashboard')
+                    return HttpResponseRedirect(f'/admindashboard/{admin.id}/')
                 else:
                     messages.error(request, 'Incorrect admin ID.')
             else:
@@ -195,18 +194,96 @@ def customerdashboard(request, customer_id):
     except Customer.DoesNotExist:
         return render(request, '404.html')  # Handle customer not found
 
-def admindashboard(request):
-    return render(request, 'admin-dashboard.html')
+def admindashboard(request, admin_id):
+    try:
+        admin = get_object_or_404(Customer, id=admin_id)
+        # Get the customer object
+        admin = Customer.objects.get(id=admin_id)
+
+        sales = Sale.objects.all()
+        refunds = Refund.objects.all()  # Get all refunds
+
+        total_customers = Customer.objects.count()
+        total_revenue = sum(sale.total_price for sale in sales)
+        total_refund_amount = sum(refund.refund_amount for refund in refunds)  # Total refund amount
+        total_refunds = refunds.count()
+        recent_sales = Sale.objects.filter(sale_date__gte=timezone.now() - timedelta(days=7)).order_by('-sale_date')[:10]  # Last 10 recent sales
+
+        # # Get customer growth over the last 7 days (daily new customers count)
+        # customer_growth = []
+        # for i in range(7):
+        #     date = timezone.now() - timedelta(days=i)
+        #     count = Customer.objects.filter(date_joined__date=date.date()).count()  # Filter by the date joined
+        #     customer_growth.append({'date': date.strftime('%Y-%m-%d'), 'count': count})
+        #
+        # # Calculate water savings over the last 7 days
+        # water_savings_data = []
+        # baseline_usage = 100  # Set a fixed baseline, e.g., 100 liters per day. Adjust according to your logic.
+        #
+        # for i in range(7):
+        #     date = timezone.now() - timedelta(days=i)
+        #     # Get the total water usage for each day
+        #     water_usage = WaterUsage.objects.filter(date=date.date()).aggregate(total_usage=Sum('usage'))[
+        #                       'total_usage'] or 0
+        #     # Calculate savings (example: savings = baseline - actual usage)
+        #     savings = max(0, baseline_usage - water_usage)
+        #     water_savings_data.append({'date': date.strftime('%Y-%m-%d'), 'savings': savings})
+
+        # Dummy customer growth over the last 7 days (assume 10 new customers per day)
+        customer_growth = []
+        for i in range(7):
+            date = timezone.now() - timedelta(days=i)
+            count = 10  # Assume 10 new customers per day for testing
+            customer_growth.append({'date': date.strftime('%Y-%m-%d'), 'count': count})
+
+        # Dummy water savings data (assume baseline of 100 liters per day and 50 liters used per day)
+        water_savings_data = []
+        baseline_usage = 100  # baseline usage is 100 liters
+        for i in range(7):
+            date = timezone.now() - timedelta(days=i)
+            water_usage = 50  # Assume 50 liters of water usage per day for testing
+            savings = max(0, baseline_usage - water_usage)  # Savings calculation
+            water_savings_data.append({'date': date.strftime('%Y-%m-%d'), 'savings': savings})
+
+        data = {
+            'total_customers': total_customers,
+            'total_revenue': total_revenue,
+            'total_refund_amount': total_refund_amount,
+            'total_refunds': total_refunds,
+            'recent_sales': recent_sales,
+            'water_savings_data': water_savings_data,
+            'customer_growth_data': customer_growth,
+
+        }
+
+        return render(request, 'admin-dashboard.html', {'admin': admin, 'dashboard_data': data, 'admin_id': admin.id})
+
+    except Admin.DoesNotExist:
+        return render(request, '404.html')  # Handle customer not found
+
 
 
 @login_required(login_url='loginemployee')
 def employeedashboard(request):
     return render(request, 'employee-dashboard.html')
 
-
-
 def productscheckout(request):
     return render(request, 'customer-product-checkout.html')
+
+def productslist(request, customer_id):
+    customer = Customer.objects.get(id=customer_id)  # Fetch the customer (You can use get_object_or_404 too)
+    products = Product.objects.all()  # Fetch all products
+    return render(request, 'customer-product-list.html', {'products': products, 'customer': customer})
+
+
+def add_to_cart(request, product_id, customer_id):
+    product = Product.objects.get(id=product_id)
+    # Retrieve the customer object using the customer_id from the URL
+    customer = get_object_or_404(Customer, id=customer_id)
+    cart_item, created = CartItem.objects.get_or_create(customer=customer, product=product)
+    cart_item.quantity += 1
+    cart_item.save()
+    return redirect('productslist', customer_id=customer.id)  # Redirect to the products list page
 
 def productsinglelist(request):
     return render(request, 'customer-product-single-list.html')

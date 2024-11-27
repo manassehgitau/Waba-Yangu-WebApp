@@ -18,7 +18,7 @@
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">(customer's Dashboard)</a></li>
+                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">{{ customer.username }}</a></li>
                                             <li class="breadcrumb-item active" aria-current="page">Products and Services</li>
                                         </ol>
                                     </nav>
@@ -36,17 +36,17 @@
                                 <div class="product-img-head">
                                     <div class="product-img">
                                         <img src="{{ product.image.url }}" alt="" class="img-fluid">
-                                    </div>
-                                    <div class="ribbons"></div>
-                                    <div class="product-content">
-                                        <div class="product-content-head">
-                                            <h3 class="product-title">{{ product.name }}</h3>
-                                            <p>{{ product.description }}</p>
-                                            <div class="product-price">${{ product.price }}</div>
-                                        </div>
-                                        <div class="product-btn">
-                                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
-                                            <a href="#" class="btn btn-outline-light">Details</a>
+                                        <div class="ribbons"></div>
+                                        <div class="product-content">
+                                            <div class="product-content-head">
+                                                <h3 class="product-title">{{ product.name }}</h3>
+                                                <p>{{ product.description }}</p>
+                                                <div class="product-price">Kshs{{ product.price }}</div>
+                                            </div>
+                                            <div class="product-btn">
+                                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                                                <a href="#" class="btn btn-outline-light">Details</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
