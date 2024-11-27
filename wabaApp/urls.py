@@ -13,14 +13,18 @@ urlpatterns = [
     path('loginemployee/', views.login_employee, name='loginemployee'),
     path('register/', views.register, name='register'),
     path('customerdashboard/<int:customer_id>/', views.customerdashboard, name='customerdashboard'),
+    path('product/<int:product_id>/<int:customer_id>/', views.product_detail, name='product_detail'),
+    path('add_to_cart/<int:product_id>/<int:customer_id>/', views.add_to_cart, name='add_to_cart'),
     path('employeedashboard/', views.employeedashboard, name='employeedashboard'),
     path('admindashboard/<int:admin_id>/', views.admindashboard, name='admindashboard'),
     path('adminproducts/<int:admin_id>/', views.admin_product_list, name='admin_product_list'),
-    path('admin/products/delete/<int:product_id>/', views.delete_product, name='delete_product'),
+    path('adminproducts/add/', views.add_product, name='add_product'),  # Add product URL
+    path('adminproducts/edit/<int:product_id>/', views.edit_product, name='edit_product'),  # Edit product URL
+    path('adminproducts/delete/<int:product_id>/', views.delete_product, name='delete_product'),  # Delete product URL
     path('productscheckout/', views.productscheckout, name='productscheckout'),
     path('productsinglelist/', views.productsinglelist, name='productsinglelist'),
     path('productslist/<int:customer_id>/', views.productslist, name='productslist'),
-    path('invoice/<int:sale_id>/', views.generate_invoice, name='generate_invoice'),
+    path('invoice/<int:customer_id>/', views.generate_invoice, name='generate_invoice'),
     path('forgotpassword/', views.forgotpassword, name='forgotpassword'),
 ]
 

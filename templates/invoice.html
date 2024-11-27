@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="page-header">
-                        <h2 class="pageheader-title">Invoice #{{ invoice.id }}</h2>
-                        <p class="pageheader-text">Details of your recent purchase</p>
+                        <h2 class="pageheader-title">Invoices for {{ customer.username }}</h2>
+                        <p class="pageheader-text">Details of your recent purchases</p>
                     </div>
                 </div>
             </div>
@@ -19,27 +19,15 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
-                            <div class="float-right">
-                                <h3 class="mb-0">Invoice #{{ invoice.id }}</h3>
-                                Date: {{ invoice.issue_date }}
-                            </div>
+                            <h3 class="mb-0">Invoices</h3>
                         </div>
                         <div class="card-body">
-                            <div class="row mb-4">
-                                <div class="col-sm-6">
-                                    <h5>From:</h5>
-                                    <h3 class="text-dark">{{ sale.customer.user.get_full_name }}</h3>
-                                    <div>{{ sale.customer.email }}</div>
-                                    <div>{{ sale.customer.phone }}</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <h5>To:</h5>
-                                    <h3 class="text-dark">{{ sale.customer.user.get_full_name }}</h3>
-                                    <div>{{ sale.customer.email }}</div>
-                                    <div>{{ sale.customer.phone }}</div>
-                                </div>
-                            </div>
-                            <div class="table-responsive-sm">
+                            {% for invoice in invoices %}
+                            <div class="invoice-section">
+                                <h4>Invoice #{{ invoice.id }}</h4>
+                                <p>Date: {{ invoice.issue_date }}</p>
+                                <p>Total Amount: ${{ invoice.total_amount }}</p>
+
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -52,40 +40,42 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for sale in sales %}
                                         <tr>
-                                            <td>1</td>
+                                            <td>{{ forloop.counter }}</td>
                                             <td>{{ sale.product.name }}</td>
                                             <td>{{ sale.product.description }}</td>
                                             <td>${{ sale.product.price }}</td>
                                             <td>{{ sale.quantity }}</td>
                                             <td>${{ sale.total_price }}</td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
-                            </div>
 
-                            <!-- Total calculations -->
-                            <div class="row">
-                                <div class="col-lg-4 col-sm-5"></div>
-                                <div class="col-lg-4 col-sm-5 ml-auto">
-                                    <table class="table table-clear">
-                                        <tbody>
-                                            <tr>
-                                                <td class="left"><strong>Subtotal</strong></td>
-                                                <td class="right">${{ invoice.total_price }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="left"><strong>Discount (20%)</strong></td>
-                                                <td class="right">${{ discount }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="left"><strong>Total</strong></td>
-                                                <td class="right"><strong>${{ invoice.total_amount }}</strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-5"></div>
+                                    <div class="col-lg-4 col-sm-5 ml-auto">
+                                        <table class="table table-clear">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="left"><strong>Subtotal</strong></td>
+                                                    <td class="right">${{ invoice.total_amount }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left"><strong>Discount (20%)</strong></td>
+                                                    <td class="right">${{ discounts.forloop.counter0 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left"><strong>Total</strong></td>
+                                                    <td class="right"><strong>${{ invoice.total_amount }}</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
                         <div class="card-footer">
                             <p>Thank you for your purchase!</p>

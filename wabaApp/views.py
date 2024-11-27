@@ -269,19 +269,37 @@ def productslist(request, customer_id):
     return render(request, 'customer-product-list.html', {'products': products, 'customer': customer})
 
 
+# View for displaying product details and adding to cart
+def product_detail(request, product_id, customer_id):
+    product = get_object_or_404(Product, id=product_id)
+    customer = get_object_or_404(Customer, id=customer_id)
+
+    return render(request, 'product-detail.html', {'product': product, 'customer': customer})
+
+
+# View for adding a product to the cart
 def add_to_cart(request, product_id, customer_id):
     product = Product.objects.get(id=product_id)
-    # Retrieve the customer object using the customer_id from the URL
     customer = get_object_or_404(Customer, id=customer_id)
+
+    # Get or create CartItem for the customer and product
     cart_item, created = CartItem.objects.get_or_create(customer=customer, product=product)
+
+    # If cart item exists, increase the quantity
     cart_item.quantity += 1
     cart_item.save()
-    return redirect('productslist', customer_id=customer.id)  # Redirect to the products list page
 
-@login_required(login_url='loginadmin')
+    return redirect('product_detail', product_id=product.id, customer_id=customer.id)
+
 def admin_product_list(request, admin_id):
-    admin = Admin.objects.get(id=admin_id)  # Fetch the customer (You can use get_object_or_404 too)
+    # Fetch the admin if needed
+    admin = get_object_or_404(Admin, id=admin_id)
+
+    # Fetch all products to display
     products = Product.objects.all()
+    # Logging for debugging
+    print("Products:", products)  # Check if products are being retrieved
+    print("Admin:", admin)  # Check if admin is being retrieved
 
     if request.method == 'POST':
         # Handle add or edit product
@@ -294,50 +312,68 @@ def admin_product_list(request, admin_id):
 
         if form.is_valid():
             form.save()
-            return redirect('admin_product_list')
+            return redirect('admin_product_list', admin_id=admin.id)
 
     return render(request, 'admin-product-management.html', {'admin': admin, 'products': products})
 
-@login_required(login_url='loginadmin')
+# @login_required(login_url='loginadmin')
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
+    return redirect('admin_product_list', admin_id=request.user.id)  # Handle GET request
+
+
+# @login_required(login_url='loginadmin')
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
+    return redirect('admin_product_list', admin_id=request.user.id)
+
+# @login_required(login_url='loginadmin')
 def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
         product.delete()
-        return redirect('admin_product_list')
-    return render(request, 'admin-product-management.html')
+        return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
+    return redirect('admin_product_list', admin_id=request.user.id)
 
 def productsinglelist(request):
     return render(request, 'customer-product-single-list.html')
 
 
-def generate_invoice(request, sale_id):
-    sale = get_object_or_404(Sale, id=sale_id)
+def generate_invoice(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
 
-    # Convert the float value (e.g., 20%) to Decimal
-    discount_percentage = Decimal('0.2')  # 20% as Decimal
+    # Fetch all invoices for the customer
+    invoices = Invoice.objects.filter(customer=customer)
 
-    # Now, perform the calculation with Decimal values
-    discount = sale.total_price * discount_percentage  # This will work without error
+    # You can sum the total amounts, or loop through each sale if needed
+    total_amount = sum(invoice.total_amount for invoice in invoices)
 
-    # Calculate the final total amount (assuming it's a discount for this example)
-    total_amount = sale.total_price - discount
+    # You might want to loop through each sale for displaying individual sale details in the invoice
+    sales = Sale.objects.filter(customer=customer)
 
-    # Create the invoice
-    invoice = Invoice.objects.create(
-        customer=sale.customer,
-        sale=sale,
-        issue_date=timezone.now(),
-        total_amount=total_amount,  # Set the total amount
-    )
+    discount_percentage = Decimal('0.2')  # Assuming the discount is 20%
+    discounts = []
+    for sale in sales:
+        discount = sale.total_price * discount_percentage
+        discounts.append(discount)
 
-    # Render the invoice page, passing the invoice, discount, and total amount
+    # Render the invoice page, passing the invoices and sales data
     return render(request, 'invoice.html', {
-        'invoice': invoice,
-        'discount': discount,
+        'invoices': invoices,
+        'customer': customer,
+        'sales': sales,
+        'discounts': discounts,
         'total_amount': total_amount,
-        'sale': sale  # Pass sale info if needed
     })
-
 
 @login_required(login_url='loginemployee')
 def employeedashboard(request):
