@@ -29,7 +29,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
 class Customer(models.Model):
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
@@ -38,6 +37,7 @@ class Customer(models.Model):
     created_at = models.DateTimeField(default=timezone.now)  # Track registration date
     date_joined = models.DateTimeField(auto_now_add=True)
     products = models.ManyToManyField(Product, blank=True)
+    prepaid_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # Prepaid balance field
 
     def __str__(self):
         return self.username
@@ -82,6 +82,8 @@ class Payment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # Payment amount in KSh
     date = models.DateTimeField(auto_now_add=True)
+    payment_method = models.CharField(max_length=50)  # e.g., "MPESA", "Credit Card", etc.
+    transaction_id = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return f"Payment of {self.amount} for {self.customer} on {self.date}"
@@ -139,3 +141,14 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"Invoice #{self.id} for {self.customer.username}"
+
+class CustomerReport(models.Model):
+    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)  # Link to the customer
+    issue_type = models.CharField(max_length=50, choices=[('billing', 'Billing Issue'), ('technical', 'Technical Issue'), ('product', 'Product Issue'), ('other', 'Other')])
+    issue_description = models.TextField()
+    file_attachment = models.FileField(upload_to='reports/', blank=True, null=True)
+    email = models.EmailField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Report by {self.customer.username} - {self.issue_type}"

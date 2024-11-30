@@ -1,6 +1,108 @@
 {% extends 'blank-page.html' %}
 {% load static %}
 {% block body %}
+    <style>
+    /* Sidebar Hover Effect */
+        .nav-link:hover {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        /* Active Sidebar Link */
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Card Styling */
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Light Mode */
+        body.light-mode {
+            background-color: #f8f9fa;
+        }
+        .sidebar-dark.light-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        /* General Card Styling */
+        .card-custom {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .card-custom .card-body {
+            padding: 20px;
+        }
+
+        /* Card Icon Styling */
+        .card-icon {
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        /* Hover Effects for Cards */
+        .card-custom:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Card Title and Text */
+        .card-custom .card-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+
+        .card-custom .card-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        /* Revenue Card Specific Styling */
+        .card-custom-revenue {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .card-custom-revenue .card-icon {
+            background-color: #218838;
+        }
+
+        /* Refunds Card Specific Styling */
+        .card-custom-refunds {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .card-custom-refunds .card-icon {
+            background-color: #c82333;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 576px) {
+            .card-custom {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
         <!-- ============================================================== -->
         <!-- Left Sidebar -->
         <!-- ============================================================== -->
@@ -23,7 +125,7 @@
                                 <a class="nav-link" href="/adminproducts/{{ admin.id }}" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Products</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Billing & Payments</a>
+                                <a class="nav-link" href="/invoice/{{ customer.id }}" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Invoices</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Reports</a>
@@ -57,13 +159,13 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h3 class="mb-2">Sales Dashboard Template </h3>
-                            <p class="pageheader-text">Lorem ipsum dolor sit ametllam fermentum ipsum eu porta consectetur adipiscing elit.Nullam vehicula nulla ut egestas rhoncus.</p>
+                            <h3 class="mb-2">Admin Dashboard </h3>
+                            <p class="pageheader-text">Welcome to your Dashboard</p>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Sales Dashboard Template</li>
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">{{ admin.username  }}'s Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Admin Dashboard </li>
                                     </ol>
                                 </nav>
                             </div>
@@ -74,21 +176,27 @@
                 <!-- pagehader  -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <!-- Total Customers -->
+                    <!-- Total Customers Card -->
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                        <div class="card shadow-sm border-light rounded">
-                            <div class="card-body">
-                                <h5 class="card-title text-muted">Total Customers</h5>
+                        <div class="card card-custom shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h5 class="card-title">Total Customers</h5>
                                 <h2 class="card-text">{{ dashboard_data.total_customers }}</h2>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Total Revenue -->
+                    <!-- Total Revenue Card -->
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                        <div class="card shadow-sm border-light rounded">
-                            <div class="card-body">
-                                <h5 class="card-title text-muted">Total Revenue</h5>
+                        <div class="card card-custom shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <i class="fas fa-bitcoin"></i>
+                                </div>
+                                <h5 class="card-title">Total Revenue</h5>
                                 <h2 class="card-text">KSh {{ dashboard_data.total_revenue }}</h2>
                             </div>
                         </div>
@@ -96,8 +204,11 @@
 
                     <!-- Total Refunds -->
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                        <div class="card shadow-sm border-light rounded">
-                            <div class="card-body">
+                        <div class="card card-custom shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <i class="fas fa-money-bill-alt"></i>
+                                </div>
                                 <h5 class="card-title text-muted">Total Refunds</h5>
                                 <h2 class="card-text">KSh {{ dashboard_data.total_refund_amount }}</h2>
                             </div>
@@ -106,8 +217,11 @@
 
                     <!-- Total Refund Count -->
                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                        <div class="card shadow-sm border-light rounded">
-                            <div class="card-body">
+                        <div class="card card-custom shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="card-icon">
+                                    <i class="fas fa-stack-exchange"></i>
+                                </div>
                                 <h5 class="card-title text-muted">Total Refunds Count</h5>
                                 <h2 class="card-text">{{ dashboard_data.total_refunds }}</h2>
                             </div>

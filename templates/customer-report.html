@@ -1,0 +1,116 @@
+{% extends 'blank-page.html' %}
+{% load static %}
+{% block body %}
+    <style>
+        .form-group {
+        margin-bottom: 20px;
+    }
+
+    .custom-file {
+        margin-top: 15px;
+    }
+
+    .btn-primary {
+        margin-top: 10px;
+    }
+    </style>
+     <!-- ============================================================== -->
+        <!-- Left Sidebar -->
+        <!-- ============================================================== -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Report</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                Menu
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-item nav-link " href="/customerdashboard/{{ customer.id }}" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/productslist/{{ customer.id }}" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/invoice/{{ customer.id }}" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Invoices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Reports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/payments/{{ customer.id }}" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i>Payment Statement</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Account Management</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-content container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="section-block" id="basicform">
+                            <h3 class="section-title">Report an Issue</h3>
+                            <p>If you're experiencing any problems, please fill out the form below and we will get back to you as soon as possible.</p>
+                        </div>
+                         <div class="card">
+                            <h5 class="card-header">Report Form</h5>
+                            <div class="card-body">
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="customerName" class="col-form-label">Customer: {{ customer.username }}</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="customerEmail">Email</label>
+                                        <input id="customerEmail" type="email" name="email" placeholder="name@example.com" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="issueType">Issue Type</label>
+                                        <select class="form-control" id="issueType" name="issue_type" required>
+                                            <option value="">Select Issue Type</option>
+                                            <option value="billing">Billing Issue</option>
+                                            <option value="technical">Technical Issue</option>
+                                            <option value="product">Product Issue</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="issueDescription">Describe the Issue</label>
+                                        <textarea class="form-control" id="issueDescription" name="issue_description" rows="5" placeholder="Provide details of the issue..." required></textarea>
+                                    </div>
+
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="fileUpload" name="file_attachment">
+                                        <label class="custom-file-label" for="fileUpload">Attach a file (optional)</label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Submit Report</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+{% endblock %}

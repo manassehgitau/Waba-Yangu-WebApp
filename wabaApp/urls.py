@@ -18,17 +18,25 @@ urlpatterns = [
     path('employeedashboard/', views.employeedashboard, name='employeedashboard'),
     path('admindashboard/<int:admin_id>/', views.admindashboard, name='admindashboard'),
     path('adminproducts/<int:admin_id>/', views.admin_product_list, name='admin_product_list'),
-    path('adminproducts/add/', views.add_product, name='add_product'),  # Add product URL
-    path('adminproducts/edit/<int:product_id>/', views.edit_product, name='edit_product'),  # Edit product URL
-    path('adminproducts/delete/<int:product_id>/', views.delete_product, name='delete_product'),  # Delete product URL
+    path('edit/<int:product_id>/<int:admin_id>/', views.edit_product, name='edit_product'),
     path('productscheckout/', views.productscheckout, name='productscheckout'),
     path('productsinglelist/', views.productsinglelist, name='productsinglelist'),
     path('productslist/<int:customer_id>/', views.productslist, name='productslist'),
     path('invoice/<int:customer_id>/', views.generate_invoice, name='generate_invoice'),
     path('forgotpassword/', views.forgotpassword, name='forgotpassword'),
-]
+    path('report/<int:customer_id>/', views.customer_report, name='customer_report'),
+    path('payments/<int:customer_id>/', views.customer_payments, name='customer_payments'),
+
+    path('pay/<int:customer_id>/', views.pay, name='pay'),
+    path('stk/', views.stk, name='stk'),
+    path('token/', views.token, name='token'),
+
+    path('accountmanagement/<int:customer_id>/', views.account_management, name='account_management'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Serve media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 

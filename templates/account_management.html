@@ -1,0 +1,179 @@
+{% extends 'blank-page.html' %}
+{% load static %}
+{% block body %}
+    <style>
+    /* Custom styles for the Account Management page */
+    .dashboard-content {
+        background-color: #f4f7fc;  /* Light background */
+        padding: 30px 15px;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+    }
+
+    .card-header {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        font-size: 18px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 12px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="password"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    button[type="submit"] {
+        background-color: #28a745;  /* Bootstrap success color */
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #218838;
+        transition: background-color 0.3s ease;
+    }
+
+    button[type="button"].btn-outline-secondary {
+        margin-top: 10px;
+        color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    button[type="button"].btn-outline-secondary:hover {
+        background-color: #f8f9fa;
+    }
+
+    .text-muted {
+        font-size: 0.875rem;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .section-block {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #343a40;
+    }
+</style>
+    <!-- ============================================================== -->
+        <!-- Left Sidebar -->
+        <!-- ============================================================== -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                Menu
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-item nav-link" href="/customerdashboard/{{ customer.id }}" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/productslist/{{ customer.id }}" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/invoice/{{ customer.id }}" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Invoices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/report/{{ customer.id }}" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Reports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/payments/{{ customer.id }}" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i>Payment Statements</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Account Management</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Support</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar -->
+        <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section-block" id="basicform">
+                        <h3 class="section-title">Edit Account Details</h3>
+                        <p>Edit your contact details below:</p>
+                    </div>
+                    <div class="card">
+                        <h5 class="card-header">Account Details</h5>
+                        <div class="card-body">
+                            <form method="POST" action="/accountmanagement/{{ customer.id }}/">
+                                {% csrf_token %}
+                                <div class="form-group mb-4">
+                                    <label for="customerName">Name</label>
+                                    <input type="text" class="form-control" id="customerName" name="customer_name" placeholder="Your Name" value="{{ customer.name }}" required>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="customerEmail">Email address</label>
+                                    <input type="email" class="form-control" id="customerEmail" name="customer_email" placeholder="name@example.com" value="{{ customer.email }}" required>
+                                    <small class="form-text text-muted">We'll use this to follow up on your updates.</small>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="customerPhone">Phone Number</label>
+                                    <input type="tel" class="form-control" id="customerPhone" name="customer_phone" placeholder="Phone Number" value="{{ customer.phone }}" required>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label for="customerPassword">Password</label>
+                                    <input type="password" class="form-control" id="customerPassword" name="customer_password" placeholder="New Password (Leave empty if unchanged)">
+                                </div>
+
+                                <button type="submit" class="btn btn-success btn-block">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="/customerdashboard/{{ customer.id }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

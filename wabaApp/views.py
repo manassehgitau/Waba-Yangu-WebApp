@@ -1,4 +1,8 @@
-from django.db.models import Sum
+import requests
+from django.http import HttpResponse
+from requests.auth import HTTPBasicAuth
+import json
+
 from django.shortcuts import render, redirect, get_object_or_404
 from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Refund, Product, CartItem, Invoice
 from django.contrib import messages
@@ -8,7 +12,9 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
-from wabaApp.forms import ProductForm
+from wabaApp.forms import ProductForm, CustomerReportForm, CustomerForm
+from django.db import models
+from wabaApp.credentials import LipanaMpesaPpassword, MpesaAccessToken
 
 # Create your views here.
 def page_not_found(request):
@@ -262,6 +268,19 @@ def admindashboard(request, admin_id):
     except Admin.DoesNotExist:
         return render(request, '404.html')  # Handle customer not found
 
+def admin_product_list(request, admin_id):
+    admin = Customer.objects.get(id=admin_id)  # Fetch the customer (You can use get_object_or_404 too)
+    products = Product.objects.all()  # Fetch all products
+    return render(request, 'admin-product-management.html', {'products': products, 'admin': admin})
+
+def edit_product(request, product_id, admin_id):
+    update_product = Product.objects.get(id=product_id)
+    form = ProductForm(request.POST, instance=update_product)
+    if form.is_valid():
+        form.save()
+        return redirect('adminproducts', admin_id)
+    else:
+        return render(request, 'edit-product.html')
 
 def productslist(request, customer_id):
     customer = Customer.objects.get(id=customer_id)  # Fetch the customer (You can use get_object_or_404 too)
@@ -291,58 +310,6 @@ def add_to_cart(request, product_id, customer_id):
 
     return redirect('product_detail', product_id=product.id, customer_id=customer.id)
 
-def admin_product_list(request, admin_id):
-    # Fetch the admin if needed
-    admin = get_object_or_404(Admin, id=admin_id)
-
-    # Fetch all products to display
-    products = Product.objects.all()
-    # Logging for debugging
-    print("Products:", products)  # Check if products are being retrieved
-    print("Admin:", admin)  # Check if admin is being retrieved
-
-    if request.method == 'POST':
-        # Handle add or edit product
-        product_id = request.POST.get('product_id')
-        if product_id:  # Edit existing product
-            product = get_object_or_404(Product, id=product_id)
-            form = ProductForm(request.POST, request.FILES, instance=product)
-        else:  # Add new product
-            form = ProductForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list', admin_id=admin.id)
-
-    return render(request, 'admin-product-management.html', {'admin': admin, 'products': products})
-
-# @login_required(login_url='loginadmin')
-def add_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
-    return redirect('admin_product_list', admin_id=request.user.id)  # Handle GET request
-
-
-# @login_required(login_url='loginadmin')
-def edit_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
-    return redirect('admin_product_list', admin_id=request.user.id)
-
-# @login_required(login_url='loginadmin')
-def delete_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    if request.method == 'POST':
-        product.delete()
-        return redirect('admin_product_list', admin_id=request.user.id)  # Redirect to product list
-    return redirect('admin_product_list', admin_id=request.user.id)
 
 def productsinglelist(request):
     return render(request, 'customer-product-single-list.html')
@@ -381,3 +348,126 @@ def employeedashboard(request):
 
 def productscheckout(request):
     return render(request, 'customer-product-checkout.html')
+
+@login_required
+def customer_report(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)  # Assuming User is used for customers
+
+    if request.method == 'POST':
+        form = CustomerReportForm(request.POST, request.FILES)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.customer = customer  # Assign the customer
+            report.save()
+            return redirect('customerdashboard', customer_id=customer.id)  # Redirect after submission
+    else:
+        form = CustomerReportForm()
+
+    return render(request, 'customer-report.html', {'form': form, 'customer': customer})
+
+def customer_payments(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)  # Get customer by ID
+    payments = Payment.objects.filter(customer=customer)  # Get all payments for the customer
+
+    # Calculate the total payments made by the customer
+    total_paid = payments.aggregate(models.Sum('amount'))['amount__sum'] or 0
+
+    # Pass the payments and total paid to the template
+    return render(request, 'customer_payments.html', {
+        'customer': customer,
+        'payments': payments,
+        'total_paid': total_paid
+    })
+
+
+def token(request):
+    consumer_key = '77bgGpmlOxlgJu6oEXhEgUgnu0j2WYxA'
+    consumer_secret = 'viM8ejHgtEmtPTHd'
+    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+
+    r = requests.get(api_URL, auth=HTTPBasicAuth(
+        consumer_key, consumer_secret))
+    mpesa_access_token = json.loads(r.text)
+    validated_mpesa_access_token = mpesa_access_token["access_token"]
+
+    return render(request, 'token.html', {"token":validated_mpesa_access_token})
+
+def pay(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    return render(request, 'prepaid-mpesa.html', {'customer': customer})
+
+def stk(request):
+    if request.method =="POST":
+        phone = request.POST.get('phone_number')
+        amount = request.POST.get('amount')
+        if phone and amount:
+            try:
+                customer = get_object_or_404(Customer, phone=phone)  # Optionally match customer by phone number
+
+                # Process payment (mock example for success)
+                payment = Payment(
+                    customer=customer,
+                    phone_number=phone,
+                    amount=Decimal(amount),
+                    payment_method="Lipa na M-Pesa"
+                )
+                payment.save()
+
+                # Update the customer's prepaid balance by creating a new PrepaidBalance entry
+                # If the customer already has a balance record, we fetch the latest one to update
+                current_balance = PrepaidBalance.objects.filter(customer=customer).last()
+
+                if current_balance:
+                    new_balance = current_balance.balance + Decimal(amount)
+                else:
+                    new_balance = Decimal(amount)  # If no previous balance, set current balance to the payment amount
+
+                # Create a new PrepaidBalance entry for the customer
+                PrepaidBalance.objects.create(
+                    customer=customer,
+                    balance=new_balance
+                )
+
+
+                messages.success(request, f"Payment of Kshs {amount} was successful!")
+                # return redirect('customerdashboard')  # Redirect to a success page or confirmation page
+            except Exception as e:
+                messages.error(request, f"Payment failed: {str(e)}")
+                # return redirect('make_payment')  # Redirect to the payment page again
+
+        phone = request.POST['phone']
+        amount = request.POST['amount']
+        access_token = MpesaAccessToken.validated_mpesa_access_token
+        api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+        headers = {"Authorization": "Bearer %s" % access_token}
+        request = {
+            "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+            "Password": LipanaMpesaPpassword.decode_password,
+            "Timestamp": LipanaMpesaPpassword.lipa_time,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount,
+            "PartyA": phone,
+            "PartyB": LipanaMpesaPpassword.Business_short_code,
+            "PhoneNumber": phone,
+            "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+            "AccountReference": "eMobilis",
+            "TransactionDesc": "Web Development Charges"
+        }
+        response = requests.post(api_url, json=request, headers=headers)
+        return HttpResponse('/customerdashboard')
+
+
+def account_management(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+
+    # Check if the form is submitted
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=customer)  # Bind form with customer data
+        if form.is_valid():
+            form.save()  # Save the updated data
+            return redirect('customerdashboard', customer_id=customer.id)  # Redirect to dashboard or relevant page
+    else:
+        form = CustomerForm(instance=customer)  # Pre-populate form with existing customer data
+
+    return render(request, 'account_management.html', {'form': form, 'customer': customer})
+

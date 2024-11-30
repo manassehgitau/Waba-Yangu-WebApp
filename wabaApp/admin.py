@@ -1,5 +1,5 @@
 from django.contrib import admin
-from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Product, Refund, CartItem, Invoice
+from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage, PrepaidBalance, LeakDetection, Payment, Notification, Sale, Product, Refund, CartItem, Invoice, CustomerReport
 
 # Register your models here.
 admin.site.register(ContactMessage)
@@ -50,3 +50,9 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('customer', 'sale', 'issue_date', 'total_amount')  # Show columns in the list view
     list_filter = ('issue_date', 'customer')  # Filter options
     # search_fields = ('customer__username', 'sale__id')  # Searchable
+
+@admin.register(CustomerReport)
+class CustomerReportAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'issue_type', 'email', 'created_at')  # Fields to display in the admin list view
+    list_filter = ('issue_type',)  # Add a filter to filter reports by issue type
+    search_fields = ('customer__username', 'email', 'issue_type')  # Add a search box to search reports by customer username, email, or issue type
