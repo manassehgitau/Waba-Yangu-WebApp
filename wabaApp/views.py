@@ -289,14 +289,13 @@ def product_detail(request, product_id, customer_id):
 
 
 # View for adding a product to the cart
-def add_to_cart(request, product_id, customer_id):
+def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    customer = get_object_or_404(Customer, id=customer_id)
 
     # Check if the product is already in the cart
     cart_item, created = CartItem.objects.get_or_create(
-        customer=customer,
         product=product,
+        customer=request.customer,
         defaults={'quantity': 1}
     )
 
