@@ -130,7 +130,7 @@ def login_employee(request):
 def forgotpassword(request):
     return render(request, 'customer-forgot-password.html')
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def customerdashboard(request, customer_id):
     try:
         customer = get_object_or_404(Customer, id=customer_id)
@@ -203,9 +203,9 @@ def customerdashboard(request, customer_id):
 
 def admindashboard(request, admin_id):
     try:
-        admin = get_object_or_404(Customer, id=admin_id)
+        admin = get_object_or_404(Admin, id=admin_id)
         # Get the customer object
-        admin = Customer.objects.get(id=admin_id)
+        admin = Admin.objects.get(id=admin_id)
 
         sales = Sale.objects.all()
         refunds = Refund.objects.all()  # Get all refunds
@@ -268,19 +268,11 @@ def admindashboard(request, admin_id):
     except Admin.DoesNotExist:
         return render(request, '404.html')  # Handle customer not found
 
-def admin_product_list(request, admin_id):
-    admin = Customer.objects.get(id=admin_id)  # Fetch the customer (You can use get_object_or_404 too)
+def admin_product_list(request):
+    # admin = Customer.objects.get(id=admin_id)  # Fetch the customer (You can use get_object_or_404 too)
     products = Product.objects.all()  # Fetch all products
-    return render(request, 'admin-product-management.html', {'products': products, 'admin': admin})
+    return render(request, 'admin-product-management.html', {'products': products})
 
-def edit_product(request, product_id, admin_id):
-    update_product = Product.objects.get(id=product_id)
-    form = ProductForm(request.POST, instance=update_product)
-    if form.is_valid():
-        form.save()
-        return redirect('adminproducts', admin_id)
-    else:
-        return render(request, 'edit-product.html')
 
 def productslist(request, customer_id):
     customer = Customer.objects.get(id=customer_id)  # Fetch the customer (You can use get_object_or_404 too)
@@ -298,18 +290,33 @@ def product_detail(request, product_id, customer_id):
 
 # View for adding a product to the cart
 def add_to_cart(request, product_id, customer_id):
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     customer = get_object_or_404(Customer, id=customer_id)
 
-    # Get or create CartItem for the customer and product
-    cart_item, created = CartItem.objects.get_or_create(customer=customer, product=product)
+    # Check if the product is already in the cart
+    cart_item, created = CartItem.objects.get_or_create(
+        customer=customer,
+        product=product,
+        defaults={'quantity': 1}
+    )
 
-    # If cart item exists, increase the quantity
-    cart_item.quantity += 1
-    cart_item.save()
+    if not created:
+        # If the product is already in the cart, increase the quantity
+        cart_item.quantity += 1
+        cart_item.save()
 
-    return redirect('product_detail', product_id=product.id, customer_id=customer.id)
+    return redirect('cart')
 
+def cart_view(request, customer_id):
+    customer = Customer.objects.get(id=customer_id)  # Fetch the customer (You can use get_object_or_404 too)
+    cart_items = CartItem.objects.filter(customer=customer)
+
+    total_price = sum(item.get_total_price() for item in cart_items)
+
+    return render(request, 'cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
 
 def productsinglelist(request):
     return render(request, 'customer-product-single-list.html')
@@ -346,10 +353,14 @@ def generate_invoice(request, customer_id):
 def employeedashboard(request):
     return render(request, 'employee-dashboard.html')
 
+def employee_list(request):
+    employees = Employee.objects.all()  # Fetch all employees from the database
+    return render(request, 'admin_employee_list.html', {'employees': employees})
+
 def productscheckout(request):
     return render(request, 'customer-product-checkout.html')
 
-@login_required
+# @login_required
 def customer_report(request, customer_id):
     customer = get_object_or_404(Customer, id=customer_id)  # Assuming User is used for customers
 
@@ -392,49 +403,13 @@ def token(request):
 
     return render(request, 'token.html', {"token":validated_mpesa_access_token})
 
-def pay(request, customer_id):
-    customer = get_object_or_404(Customer, id=customer_id)
-    return render(request, 'prepaid-mpesa.html', {'customer': customer})
+def pay(request):
+   return render(request, 'prepaid-mpesa.html')
+
+
 
 def stk(request):
     if request.method =="POST":
-        phone = request.POST.get('phone_number')
-        amount = request.POST.get('amount')
-        if phone and amount:
-            try:
-                customer = get_object_or_404(Customer, phone=phone)  # Optionally match customer by phone number
-
-                # Process payment (mock example for success)
-                payment = Payment(
-                    customer=customer,
-                    phone_number=phone,
-                    amount=Decimal(amount),
-                    payment_method="Lipa na M-Pesa"
-                )
-                payment.save()
-
-                # Update the customer's prepaid balance by creating a new PrepaidBalance entry
-                # If the customer already has a balance record, we fetch the latest one to update
-                current_balance = PrepaidBalance.objects.filter(customer=customer).last()
-
-                if current_balance:
-                    new_balance = current_balance.balance + Decimal(amount)
-                else:
-                    new_balance = Decimal(amount)  # If no previous balance, set current balance to the payment amount
-
-                # Create a new PrepaidBalance entry for the customer
-                PrepaidBalance.objects.create(
-                    customer=customer,
-                    balance=new_balance
-                )
-
-
-                messages.success(request, f"Payment of Kshs {amount} was successful!")
-                # return redirect('customerdashboard')  # Redirect to a success page or confirmation page
-            except Exception as e:
-                messages.error(request, f"Payment failed: {str(e)}")
-                # return redirect('make_payment')  # Redirect to the payment page again
-
         phone = request.POST['phone']
         amount = request.POST['amount']
         access_token = MpesaAccessToken.validated_mpesa_access_token
@@ -454,9 +429,8 @@ def stk(request):
             "TransactionDesc": "Web Development Charges"
         }
         response = requests.post(api_url, json=request, headers=headers)
-        return HttpResponse('/customerdashboard')
-
-
+        return HttpResponse("Success")
+    
 def account_management(request, customer_id):
     customer = get_object_or_404(Customer, id=customer_id)
 
@@ -467,7 +441,36 @@ def account_management(request, customer_id):
             form.save()  # Save the updated data
             return redirect('customerdashboard', customer_id=customer.id)  # Redirect to dashboard or relevant page
     else:
-        form = CustomerForm(instance=customer)  # Pre-populate form with existing customer data
+        form = CustomerForm(instance=customer)
 
     return render(request, 'account_management.html', {'form': form, 'customer': customer})
 
+
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()  # Save the edited product data
+            return redirect('admin_product_list')
+    else:
+        form = ProductForm(instance=product)  #
+
+    return render(request, 'edit-product.html', {'form': form, 'product': product})
+
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    product.delete()
+    return redirect('/adminproducts')
+
+def admin_customer_list(request, admin_id):
+    customers = Customer.objects.all()
+
+    admin = get_object_or_404(Admin, id=admin_id)
+
+    return render(request, 'admin-customer-list.html', {
+        'admin': admin,
+        'customers': customers,
+    })

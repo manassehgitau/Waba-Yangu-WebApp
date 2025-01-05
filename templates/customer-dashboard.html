@@ -463,10 +463,10 @@
                             <a class="nav-link" href="/payments/{{ customer.id }}" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i>Payment Statement</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Account Management</a>
+                            <a class="nav-link" href="/accountmanagement/{{ customer.id }}" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Account Management</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Support</a>
+{#                            <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Support</a>#}
                         </li>
                     </ul>
                 </div>
@@ -491,7 +491,7 @@
                                 <h5 class="text-muted">Water Usage</h5>
                                 <div class="metric-value d-inline-block">
                                     <h1 id="waterUsageToday" class="mb-1">{{ dashboard_data.water_usage_today }} L</h1>
-                                    <a href="/pay/{{ customer.id }}"><button class="btn btn-primary my-1 ms-5" id="topUpButton">Invoices</button></a>
+                                    <a href="/invoice/{{ customer.id }}"><button class="btn btn-primary my-1 ms-5" id="topUpButton">Invoices</button></a>
                                 </div>
                                 <div class="metric-label d-inline-block float-right text-success">
                                     <span><i class="fa fa-fw fa-tint"></i></span><span>Today</span>
@@ -507,7 +507,7 @@
                                 <h5 class="text-muted">Prepaid Balance</h5>
                                 <div class="metric-value d-inline-block">
                                     <h1 id="prepaidBalance" class="mb-1">{{ dashboard_data.prepaid_balance }} KSh</h1>
-                                    <a href="/pay/{{ customer.id }}"><button class="btn btn-primary my-1 ms-5" id="topUpButton">Top Up via MPESA</button></a>
+                                    <a href="/pay"><button class="btn btn-primary my-1 ms-5" id="topUpButton">Top Up via MPESA</button></a>
                                 </div>
                             </div>
                         </div>

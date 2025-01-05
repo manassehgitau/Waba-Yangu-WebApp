@@ -142,4 +142,4 @@ EMAIL_HOST_USER = 'your_email@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = 'your_password'  # Your email password
 DEFAULT_FROM_EMAIL = 'your_email@gmail.com'  # Default from address for emails
 
-APPEND_SLASH = False
+

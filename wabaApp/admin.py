@@ -4,7 +4,6 @@ from wabaApp.models import ContactMessage, Customer, Admin, Employee, WaterUsage
 # Register your models here.
 admin.site.register(ContactMessage)
 admin.site.register(Admin)
-admin.site.register(Employee)
 admin.site.register(WaterUsage)
 admin.site.register(PrepaidBalance)
 admin.site.register(LeakDetection)
@@ -56,3 +55,8 @@ class CustomerReportAdmin(admin.ModelAdmin):
     list_display = ('customer', 'issue_type', 'email', 'created_at')  # Fields to display in the admin list view
     list_filter = ('issue_type',)  # Add a filter to filter reports by issue type
     search_fields = ('customer__username', 'email', 'issue_type')  # Add a search box to search reports by customer username, email, or issue type
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'position', 'hire_date')
+    search_fields = ('first_name', 'last_name', 'email')

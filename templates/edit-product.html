@@ -1,45 +1,114 @@
 {% extends 'blank-page.html' %}
 {% load static %}
-{% block content %}
-    <div class="container-fluid dashboard-content">
-        <h2>Edit Product - {{ product.name }}</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
-            <!-- Add CSRF token if using Django for security -->
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+{% block body %}
+    <style>
+        .card {
+            margin-top: 20px;
+        }
 
-            <!-- Product Name -->
-            <div class="form-group">
-                <label for="productName">Product Name</label>
-                <input type="text" id="productName" name="name" value="{{ product.name }}" class="form-control" required>
-            </div>
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-            <!-- Product Price -->
-            <div class="form-group">
-                <label for="productPrice">Product Price (in Kshs)</label>
-                <input type="number" id="productPrice" name="price" value="{{ product.price }}" class="form-control" step="0.01" required>
-            </div>
+        .form-control {
+            padding: 10px;
+        }
 
-            <!-- Product Description -->
-            <div class="form-group">
-                <label for="productDescription">Product Description</label>
-                <textarea id="productDescription" name="description" class="form-control" required>{{ product.description }}</textarea>
-            </div>
+        .btn {
+            margin-top: 20px;
+        }
 
-            <!-- Product Image -->
-            <div class="form-group">
-                <label for="productImage">Product Image</label>
-                <input type="file" id="productImage" name="image" class="form-control-file">
-                <!-- Display existing image if any -->
-                {% if product.image %}
-                    <div>
-                        <img src="{{ product.image.url }}" width="100" alt="Product Image">
+        .form-control-file {
+            margin-top: 10px;
+        }
+    </style>
+    <!-- ============================================================== -->
+        <!-- Left Sidebar -->
+        <!-- ============================================================== -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                Menu
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-item nav-link active" href="#" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminproducts/{{ admin.id }}" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/invoice/{{ customer.id }}" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Invoices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Reports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i>Alerts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Account Management</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Support</a>
+                            </li>
+                        </ul>
                     </div>
-                {% endif %}
+                </nav>
             </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar -->
+        <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <h2>Edit Product - {{ product.name }}</h2>
+                <form action="/editadminproducts/{{ product.id }}/" method="POST" enctype="multipart/form-data">
+                    <!-- Add CSRF token if using Django for security -->
+                    {% csrf_token %}
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <a href="/product-list-url" class="btn btn-secondary">Cancel</a>
-        </form>
+                    <!-- Product Name -->
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" name="name" value="{{ product.name }}" class="form-control" required>
+                    </div>
+
+                    <!-- Product Price -->
+                    <div class="form-group">
+                        <label for="productPrice">Product Price (in Kshs)</label>
+                        <input type="number" id="productPrice" name="price" value="{{ product.price }}" class="form-control" step="0.01" required>
+                    </div>
+
+                    <!-- Product Description -->
+                    <div class="form-group">
+                        <label for="productDescription">Product Description</label>
+                        <textarea id="productDescription" name="description" class="form-control" required>{{ product.description }}</textarea>
+                    </div>
+
+                    <!-- Product Image -->
+                    <div class="form-group">
+                        <label for="productImage">Product Image</label>
+                        <input type="file" id="productImage" name="image" class="form-control-file">
+                        <!-- Display existing image if any -->
+                        {% if product.image %}
+                            <div>
+                                <img src="{{ product.image.url }}" width="100" alt="Product Image">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="/product-list-url" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
     </div>
+
 {% endblock %}
