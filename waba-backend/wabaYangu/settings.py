@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts'
+    'accounts',
     'cloudinary',
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt', # Added for JWT features
     'drf_yasg',
 ]
 
@@ -143,7 +143,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # rest framework
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -178,3 +177,24 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # for http redirect
 ALLOWED_REDIRECT_SCHEMES = ['http', 'https', 'ftp', 'ftps', 'mailto']
+
+# --- Email Configuration ---
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com') 
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='') 
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='') 
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER) 
+
+# --- URLs for Email Links ---
+FRONTEND_PASSWORD_RESET_CONFIRM_URL = config(
+    'FRONTEND_PASSWORD_RESET_CONFIRM_URL', 
+    default='http://localhost:3000/auth/reset-password-confirm/' # TODO: Adjust later
+)
+
+# Base URL 
+API_BASE_URL = config(
+    'API_BASE_URL', 
+    default='http://localhost:8000' 
+)
