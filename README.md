@@ -1,36 +1,17 @@
 # Waba Yangu WebApp
 
-**Waba Yangu** (meaning "My Stove" in Swahili) is a comprehensive IoT-enabled energy monitoring system designed to help users track, manage, and optimize their energy consumption. The platform combines hardware (ESP8266-based firmware), a Django REST API backend, and a React-based frontend to provide real-time monitoring and control of energy usage, with integrated M-Pesa payment functionality for utility billing.
+**Waba Yangu** (meaning "My Water" in Swahili) is a comprehensive IoT-enabled digital monitoring system designed to help users track, manage, and optimize their water consumption. The platform combines hardware (ESP8266-based firmware), a Django REST API backend, and a React-based frontend to provide real-time monitoring and control of water usage, with integrated M-Pesa payment functionality for utility billing.
 
 ## 🌟 Features
 
-- **Real-time Energy Monitoring**: Track your energy consumption in real-time through IoT devices
+- **Real-time Monitoring**: Track your water consumption in real-time through IoT devices
 - **User Authentication & Management**: Secure user registration, login, and profile management with JWT authentication
 - **Subscription Plans**: Free, Basic, and Premium subscription tiers
 - **M-Pesa Integration**: Seamless payment integration using Safaricom's M-Pesa STK Push
 - **Cloud Storage**: Profile picture management via Cloudinary
 - **RESTful API**: Well-structured Django REST Framework backend
 - **Modern Frontend**: React-based single-page application with Vite
-- **IoT Firmware**: ESP8266-based firmware for energy monitoring devices
-
-## 🏗️ Project Structure
-
-```
-Waba-Yangu-WebApp/
-├── waba-backend/          # Django REST API Backend
-│   ├── accounts/          # User authentication and management
-│   ├── wabaYangu/         # Main Django project configuration
-│   ├── requirements.txt   # Python dependencies
-│   └── Dockerfile         # Docker configuration for backend
-├── waba-frontend/         # React Frontend Application
-│   ├── src/               # React source files
-│   ├── public/            # Static assets
-│   └── package.json       # Node.js dependencies
-└── Waba-Yangu-Firmware/   # ESP8266 IoT Device Firmware
-    ├── src/               # C++ source code
-    ├── platformio.ini     # PlatformIO configuration
-    └── lib/               # Libraries
-```
+- **IoT Firmware**: ESP8266-based firmware for water monitoring devices
 
 ## 🛠️ Technology Stack
 
@@ -98,23 +79,9 @@ venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Create a .env file with your configuration
-cat > .env << EOF
-SECRET_KEY=your-secret-key-here
-DEBUG=True
-DATABASE_URL=postgresql://user:password@localhost:5432/wabayangu
-CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-CLOUDINARY_API_KEY=your-cloudinary-api-key
-CLOUDINARY_API_SECRET=your-cloudinary-api-secret
-DEFAULT_FROM_EMAIL=noreply@wabayangu.com
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
-FRONTEND_PASSWORD_RESET_CONFIRM_URL=http://localhost:5173/auth/reset-password-confirm/
-API_BASE_URL=http://localhost:8000
-EOF
+# Copy .env.example to .env and configure your environment variables
+cp .env.example .env
+# Edit .env with your actual configuration values
 
 # Run migrations
 python manage.py migrate
@@ -136,10 +103,9 @@ cd waba-frontend
 # Install dependencies
 npm install
 
-# Create environment configuration
-cat > .env << EOF
-VITE_API_URL=http://localhost:8000
-EOF
+# Copy .env.example to .env and configure your environment variables
+cp .env.example .env
+# Edit .env with your actual configuration values
 
 # Run the development server
 npm run dev
@@ -247,28 +213,12 @@ pio run --target clean
 
 ## 🔐 Environment Variables
 
-### Backend (.env)
-```
-SECRET_KEY=your-django-secret-key
-DEBUG=True/False
-DATABASE_URL=postgresql://user:password@host:port/database
-CLOUDINARY_CLOUD_NAME=your-cloudinary-name
-CLOUDINARY_API_KEY=your-cloudinary-key
-CLOUDINARY_API_SECRET=your-cloudinary-secret
-DEFAULT_FROM_EMAIL=your-email
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your-email
-EMAIL_HOST_PASSWORD=your-password
-FRONTEND_PASSWORD_RESET_CONFIRM_URL=frontend-url
-API_BASE_URL=backend-url
-```
+Each component requires environment configuration. Example files are provided:
 
-### Frontend (.env)
-```
-VITE_API_URL=http://localhost:8000
-```
+- **Backend**: See `waba-backend/.env.example` for all required backend environment variables
+- **Frontend**: See `waba-frontend/.env.example` for frontend configuration
+
+Copy the respective `.env.example` file to `.env` in each directory and update with your actual values.
 
 ## 📱 User Subscription Types
 
